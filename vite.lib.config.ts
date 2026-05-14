@@ -1,0 +1,30 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import path from 'node:path'
+
+export default defineConfig({
+  plugins: [react()],
+  publicDir: false,
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+  build: {
+    outDir: 'dist-lib',
+    emptyOutDir: true,
+    sourcemap: true,
+    lib: {
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      formats: ['es', 'cjs'],
+      fileName: (format) => (format === 'es' ? 'index.mjs' : 'index.cjs'),
+    },
+    rollupOptions: {
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+      ],
+    },
+  },
+})

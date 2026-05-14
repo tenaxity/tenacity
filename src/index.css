@@ -1,0 +1,157 @@
+@import url('https://rsms.me/inter/inter.css');
+@import url('https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  TENACITY DESIGN TOKENS
+  Color values in HSL so we can compose with alpha at runtime.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 18% 40%;          /* slate-600ish — passes WCAG AA on white */
+    --subtle: 220 13% 91%;
+    --subtle-foreground: 215 25% 25%;         /* slate-700 — for descriptions, labels, secondary content */
+    --border: 220 13% 91%;
+    --ring: 256 51% 41%;
+    --primary: 256 51% 41%;             /* #54339D — Regal */
+    --primary-hover: 256 55% 33%;
+    --primary-foreground: 0 0% 100%;
+    --primary-subtle: 256 60% 96%;
+    --success: 145 50% 28%;             /* forest — settled, no urgency duty */
+    --success-foreground: 0 0% 100%;
+    --success-subtle: 145 40% 94%;
+    --warning: 30 80% 44%;               /* burnt amber — readable as warm/alert, not brown */
+    --warning-foreground: 0 0% 100%;
+    --warning-subtle: 35 75% 94%;
+    --danger: 358 65% 48%;               /* cardinal red — urgent but weighted, not fire-engine */
+    --danger-foreground: 0 0% 100%;
+    --danger-subtle: 358 70% 96%;
+
+    /* Typeface */
+    --font-sans: 'Geist', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Radius — pixel-soft industrial. All-even per Hard Rule #11. */
+    --radius-sm: 0px;
+    --radius-md: 2px;
+    --radius-lg: 2px;
+    --radius-xl: 4px;
+  }
+
+  .dark {
+    --background: 222 47% 8%;
+    --foreground: 210 20% 96%;
+    --muted: 222 35% 13%;
+    --muted-foreground: 215 14% 70%;          /* lifted for dark bg readability */
+    --subtle: 222 30% 17%;
+    --subtle-foreground: 213 27% 86%;
+    --border: 222 25% 20%;
+    --ring: 256 60% 68%;
+    --primary: 256 60% 68%;
+    --primary-hover: 256 65% 76%;
+    --primary-foreground: 222 47% 8%;
+    --primary-subtle: 256 40% 16%;
+    --success: 145 45% 50%;
+    --success-foreground: 222 47% 8%;
+    --success-subtle: 145 35% 14%;
+    --warning: 32 75% 58%;
+    --warning-foreground: 222 47% 8%;
+    --warning-subtle: 32 50% 14%;
+    --danger: 358 65% 64%;
+    --danger-foreground: 222 47% 8%;
+    --danger-subtle: 358 50% 16%;
+  }
+
+  /* Typeface profiles — toggled by class on <html> */
+  .font-inter   { --font-sans: 'Inter', system-ui, sans-serif; }
+  .font-geist   { --font-sans: 'Geist', system-ui, sans-serif; }
+  .font-switzer { --font-sans: 'Switzer', system-ui, sans-serif; }
+  .font-plex    { --font-sans: 'IBM Plex Sans', system-ui, sans-serif; }
+
+  * { border-color: hsl(var(--border)); }
+
+  html, body, #root {
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body { margin: 0; min-height: 100vh; }
+}
+
+/*
+  Focus bar — system-wide idiom for fillable surfaces (inputs, dropdown triggers,
+  OTP cells, tag inputs). The 4px primary bar floats inside the field with 6px
+  breathing room top and bottom — the masks are bg-background colored stripes
+  that cover the bar's ends, so the bar appears "disconnected" from edges.
+
+  Order matters: in CSS multi-shadow, the FIRST shadow paints on top.
+  → masks listed first (cover the bar's ends), bar listed last (sits behind masks).
+*/
+@layer utilities {
+  .shadow-bar-focus {
+    box-shadow:
+      inset 0  6px 0 0 hsl(var(--background)),
+      inset 0 -6px 0 0 hsl(var(--background)),
+      inset 4px 0 0 0 hsl(var(--primary));
+  }
+}
+
+/* Animations */
+@keyframes progress-indeterminate {
+  0%   { left: -33%; }
+  100% { left: 100%; }
+}
+.animate-progress-indeterminate {
+  animation: progress-indeterminate 1.4s ease-in-out infinite;
+}
+
+/* Loader — rubber-stamp press (tenacity-distinctive) */
+@keyframes loader-stamp {
+  0%, 30%   { transform: translateY(-2px) scaleY(1); }
+  45%, 55%  { transform: translateY(0)    scaleY(0.7); }
+  70%, 100% { transform: translateY(-2px) scaleY(1); }
+}
+.animate-loader-stamp {
+  animation: loader-stamp 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+
+/* Loader — imprint left behind by the stamp */
+@keyframes loader-imprint {
+  0%, 35%   { opacity: 0; transform: scaleX(0.6); }
+  50%       { opacity: 0.5; transform: scaleX(1); }
+  80%, 100% { opacity: 0; transform: scaleX(1); }
+}
+.animate-loader-imprint {
+  animation: loader-imprint 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+
+/* Loader — stamps (4 stamps firing in sequence, "1, 2, 3, 4") */
+@keyframes loader-stamps {
+  0%, 18%   { transform: translateY(-2px) scaleY(1); }
+  22%, 28%  { transform: translateY(0) scaleY(0.7); }
+  32%, 100% { transform: translateY(-2px) scaleY(1); }
+}
+.animate-loader-stamps {
+  animation: loader-stamps 2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+@keyframes loader-stamps-imprint {
+  0%, 18%   { opacity: 0; transform: scaleX(0.6); }
+  22%, 28%  { opacity: 0.5; transform: scaleX(1); }
+  32%, 100% { opacity: 0; transform: scaleX(1); }
+}
+.animate-loader-stamps-imprint {
+  animation: loader-stamps-imprint 2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+}
+
