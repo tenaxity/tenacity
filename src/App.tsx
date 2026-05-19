@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Moon, Sun, Type, MousePointerClick, Square, BadgeCheck, Layers, FileSignature, Sparkles, CheckSquare, Circle, ToggleLeft, ChevronDown, FolderTree, User, Bell, MessageSquare, Loader2, Inbox, MessageCircle, GitCommit, MoreVertical, PanelRight, Table as TableIcon, Monitor } from 'lucide-react'
+import { Moon, Sun, Type, MousePointerClick, Square, BadgeCheck, Layers, FileSignature, Sparkles, CheckSquare, Circle, ToggleLeft, ChevronDown, FolderTree, User, Bell, MessageSquare, Loader2, Inbox, MessageCircle, GitCommit, MoreVertical, PanelRight, Table as TableIcon, Monitor, MessageCircleMore, BarChart3 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { TypefacePicker } from '@/components/ui/typeface-picker'
@@ -28,11 +28,13 @@ import { TimelineStory } from '@/stories/timeline'
 import { DropdownMenuStory } from '@/stories/dropdown-menu'
 import { DrawerStory } from '@/stories/drawer'
 import { TableStory } from '@/stories/table'
+import { ChatStory } from '@/stories/chat'
+import { MetricsStory } from '@/stories/metrics'
 import { SentPage } from '@/screens/sent-page'
 import { DetailsPage } from '@/screens/details-page'
 import { Toaster } from '@/components/ui/toast'
 
-type StoryId = 'typography' | 'buttons' | 'inputs' | 'select' | 'tabs' | 'badges' | 'cards' | 'checkbox' | 'radio' | 'toggle' | 'avatar' | 'feedback' | 'tooltip' | 'skeleton' | 'modal' | 'drawer' | 'timeline' | 'menu' | 'table' | 'document-status' | 'empty-state' | 'screen-sent' | 'screen-details'
+type StoryId = 'typography' | 'buttons' | 'inputs' | 'select' | 'tabs' | 'badges' | 'cards' | 'checkbox' | 'radio' | 'toggle' | 'avatar' | 'feedback' | 'tooltip' | 'skeleton' | 'modal' | 'drawer' | 'timeline' | 'menu' | 'table' | 'document-status' | 'empty-state' | 'chat' | 'metrics' | 'screen-sent' | 'screen-details'
 
 const NAV: { group: string; items: { id: StoryId; label: string; icon: typeof Type }[] }[] = [
   {
@@ -69,6 +71,13 @@ const NAV: { group: string; items: { id: StoryId; label: string; icon: typeof Ty
     items: [
       { id: 'document-status', label: 'DocumentStatus', icon: FileSignature },
       { id: 'empty-state',     label: 'EmptyState',     icon: Inbox },
+    ],
+  },
+  {
+    group: 'Chat & Data',
+    items: [
+      { id: 'chat',    label: 'Chat',    icon: MessageCircleMore },
+      { id: 'metrics', label: 'Metrics', icon: BarChart3 },
     ],
   },
   {
@@ -197,6 +206,8 @@ function App() {
           {active === 'table'           && <TableStory />}
           {active === 'document-status' && <DocumentStatusStory />}
           {active === 'empty-state'     && <EmptyStateStory />}
+          {active === 'chat'            && <ChatStory />}
+          {active === 'metrics'         && <MetricsStory />}
           {active === 'screen-sent'     && <SentPage />}
         </main>
       </div>

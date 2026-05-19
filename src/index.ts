@@ -28,6 +28,14 @@ export * from './components/ui/timeline'
 export * from './components/ui/toast'
 export * from './components/ui/toast-store'
 export * from './components/ui/toggle'
+export * from './components/ui/chat-bubble'
+export * from './components/ui/chat-composer'
+export * from './components/ui/typing-indicator'
+export * from './components/ui/streaming-text'
+export * from './components/ui/reference-chip'
+export * from './components/ui/metric-card'
+export * from './components/ui/score-meter'
+export * from './components/ui/split-pane'
 export * from './components/ui/tooltip'
 export * from './components/ui/top-nav'
 
@@ -36,3 +44,13 @@ export * from './components/patterns/document-status'
 export * from './components/patterns/empty-state'
 
 export * from './lib/cn'
+
+export {
+  AlertTriangle,
+  ArrowLeft,
+  Check,
+  ExternalLink,
+  RefreshCw,
+  Search,
+  X,
+} from 'lucide-react'

@@ -31,23 +31,19 @@ Library artifacts are written to `dist-lib/`:
 - `types/index.d.ts`
 - `style.css`
 
-## Local Consumption
+## Installation
 
 In a consuming app:
 
-```json
-{
-  "dependencies": {
-    "@tenacity/ui": "file:../tenacity"
-  }
-}
+```bash
+npm install @ten4city/ui
 ```
 
 Import components and styles:
 
 ```tsx
-import '@tenacity/ui/styles.css'
-import { Badge, Button, Card, Input, Table } from '@tenacity/ui'
+import '@ten4city/ui/styles.css'
+import { Badge, Button, Card, Input, Table } from '@ten4city/ui'
 ```
 
 ## Tailwind Preset
@@ -55,13 +51,13 @@ import { Badge, Button, Card, Input, Table } from '@tenacity/ui'
 Apps that want to compose with Tenacity utility tokens can use the preset:
 
 ```js
-import tenacityPreset from '@tenacity/ui/tailwind-preset'
+import tenacityPreset from '@ten4city/ui/tailwind-preset'
 
 export default {
   presets: [tenacityPreset],
   content: [
     './src/**/*.{ts,tsx,js,jsx}',
-    './node_modules/@tenacity/ui/dist-lib/**/*.js',
+    './node_modules/@ten4city/ui/dist-lib/**/*.js',
   ],
 }
 ```

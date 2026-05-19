@@ -1,8 +1,16 @@
 {
-  "name": "@tenacity/ui",
-  "private": true,
+  "name": "@ten4city/ui",
   "version": "0.1.0",
+  "description": "Industrial-modernist React design system for legal/document/B2B enterprise software.",
+  "license": "UNLICENSED",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tenaxity/tenacity.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist-lib/index.cjs",
   "module": "./dist-lib/index.mjs",
   "types": "./dist-lib/types/index.d.ts",
@@ -29,6 +37,7 @@
     "build": "npm run build:app && npm run build:lib",
     "build:app": "tsc -b && vite build",
     "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json && tailwindcss -i ./src/index.css -o ./dist-lib/style.css --minify",
+    "prepack": "npm run build:lib",
     "lint": "eslint .",
     "preview": "vite preview"
   },
