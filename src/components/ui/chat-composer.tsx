@@ -1,7 +1,6 @@
 import { forwardRef, useRef, useEffect, type TextareaHTMLAttributes } from 'react'
 import { Send, Square } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Loader } from '@/components/ui/loader'
 import { cn } from '@/lib/cn'
 
 export interface ChatComposerProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onSubmit'> {
