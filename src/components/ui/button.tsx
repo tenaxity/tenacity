@@ -19,7 +19,7 @@ const buttonStyles = cva(
         primary:
           'bg-primary text-primary-foreground hover:bg-primary-hover key-raised-dark active:key-pressed-dark active:bg-primary',
         secondary:
-          'bg-surface text-foreground border border-border hover:bg-muted key-raised active:key-pressed',
+          'bg-background text-foreground border border-border hover:bg-muted key-raised active:key-pressed',
         ghost:
           'bg-transparent text-foreground hover:bg-muted',
         destructive:

@@ -111,7 +111,11 @@ Badges are ALL CAPS mono, small, letter-spaced — they read as metadata. Button
 
 Rejected variants leave the codebase — no `__deprecated` exports, no unused variant props. Exploration scaffolding (runtime pickers) survives only while a decision is open. The codebase reflects the current spec, not the exploration history.
 
-### 13. Motion communicates mass, never decorates
+### 13. The contrast floor — the system speaks at full volume
+
+An instrument is high-contrast: black chassis, engraved markings, visible seams. Every stroke and relief edge must be *perceptibly* present at 100% zoom on a standard display — a border, rule, or bevel too faint to clearly see is not restraint, it's paper. When tuning a stroke, err darker. Structural strokes rank: 2px near-ink (table header rule) > `rule-strong` (section breaks) > `border` (component edges) > `rule` (row hairlines). Dark mass is part of the identity: chrome should frame the screen (band + rail and/or status bar), not just cap it.
+
+### 14. Motion communicates mass, never decorates
 
 Overlays (drawer, modal, toast) move with weighted spring physics — fast, damped, heavy, like a machine part seating into place (`--ease-seat`, 200–280ms). Buttons get micro press-feedback (1px dip). Tables, page loads, and data render instantly — no entrance animations, no stagger, no skeleton shimmer slower than 1.2s. Nothing animates that isn't responding to the user's hand.
 
@@ -125,7 +129,7 @@ Overlays (drawer, modal, toast) move with weighted spring physics — fast, damp
 | Mono | JetBrains Mono | The machine voice — all data |
 | Body size | 14px prose / 12px data | Terminal-dense |
 | Chrome | HSL 220 16% 11% | Graphite housing, blue-cold |
-| Page | HSL 220 16% 95% | Cold steel-gray screen bed |
+| Page | HSL 220 15% 93% | Cold steel-gray screen bed |
 | Surface | White | Data surfaces |
 | Primary (ink) | HSL 220 18% 14% | Near-black interactive |
 | Success | Forest (145 50% 28%) | Settled, cold |
@@ -165,7 +169,7 @@ The square carries the color; the text stays ink. Twenty green rows stay quiet; 
 
 ### Chrome
 
-TopNav is the graphite band: 48px, chrome tokens, 1px top highlight. Brand block, nav items (chrome-muted → chrome-foreground on active, with a 2px ink-inverse underline), actions right. LeftNav on chrome surfaces uses the same vocabulary. Content never renders chrome colors; chrome never renders content colors.
+TopNav is the graphite band: 48px, chrome tokens, 1px top highlight. Brand block, nav items (chrome-muted → chrome-foreground on active, with a 2px ink-inverse underline), actions right. **StatusBar** is the housing's bottom edge: a 32px graphite readout strip (mono counts, env, timestamps — never actions). A left nav on chrome forms an L-frame with the band. Together they make the screen sit inside the machine. Content never renders chrome colors; chrome never renders content colors.
 
 ### Table recipe
 

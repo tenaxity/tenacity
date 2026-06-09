@@ -25,7 +25,8 @@ Table.displayName = 'Table'
 
 export const TableHeader = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => (
-    <thead ref={ref} className={cn('border-b border-rule-strong', className)} {...props} />
+    // 2px near-ink rule under the header — the table's strongest stroke.
+    <thead ref={ref} className={cn('border-b-2 border-rule-strong', className)} {...props} />
   )
 )
 TableHeader.displayName = 'TableHeader'

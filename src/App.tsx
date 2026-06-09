@@ -144,12 +144,13 @@ function App() {
       </div>
 
       <div className="flex">
-        {/* Sidebar — sticky beneath chrome + bench */}
-        <nav className="w-56 shrink-0 sticky top-[88px] self-start h-[calc(100vh-88px)] border-r border-rule overflow-y-auto py-5 px-3">
+        {/* Sidebar — the housing's left rail. With the TopNav it forms an
+            L-frame: the screen sits inside the machine, not on paper. */}
+        <nav className="w-56 shrink-0 sticky top-[88px] self-start h-[calc(100vh-88px)] bg-chrome border-r border-chrome-rule overflow-y-auto py-5 px-3">
           <div className="space-y-5">
             {NAV.map(group => (
               <div key={group.group} className="space-y-1">
-                <div className="px-2 text-xs uppercase tracking-wider text-subtle-foreground font-semibold">{group.group}</div>
+                <div className="px-2 text-xs uppercase tracking-wider text-chrome-muted/70 font-semibold">{group.group}</div>
                 <div className="space-y-0.5">
                   {group.items.map(item => {
                     const Icon = item.icon
@@ -160,8 +161,8 @@ function App() {
                         className={cn(
                           'w-full flex items-center gap-2 px-2 py-1.5 rounded-sm text-base transition-colors duration-micro text-left',
                           active === item.id
-                            ? 'text-foreground font-semibold shadow-[inset_4px_0_0_0_hsl(var(--primary))]'
-                            : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
+                            ? 'text-chrome-foreground font-semibold bg-chrome-raised shadow-[inset_4px_0_0_0_hsl(var(--chrome-foreground))]'
+                            : 'text-chrome-muted hover:text-chrome-foreground hover:bg-chrome-raised/60'
                         )}
                       >
                         <Icon className="h-3.5 w-3.5 shrink-0" />
@@ -174,9 +175,9 @@ function App() {
             ))}
           </div>
 
-          <div className="mt-8 px-2 pt-5 border-t border-rule">
-            <div className="font-mono text-xs text-muted-foreground">tenacity · v2</div>
-            <p className="text-xs text-muted-foreground mt-1">Personal system. The housing is dark; the screen is lit.</p>
+          <div className="mt-8 px-2 pt-5 border-t border-chrome-rule">
+            <div className="font-mono text-xs text-chrome-muted">tenacity · v2</div>
+            <p className="text-xs text-chrome-muted/70 mt-1">Personal system. The housing is dark; the screen is lit.</p>
           </div>
         </nav>
 

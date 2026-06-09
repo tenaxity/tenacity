@@ -17,19 +17,21 @@
 
 @layer base {
   :root {
-    /* Screen — the light content zone */
-    --background: 220 16% 95%;            /* cold steel page bed */
+    /* Screen — the light content zone.
+       Contrast floor: strokes and relief must be VISIBLE. An instrument is
+       high-contrast — black chassis, engraved markings. Faint = paper. */
+    --background: 220 15% 93%;            /* cold steel page bed */
     --surface: 0 0% 100%;                 /* white data surfaces */
     --foreground: 220 20% 10%;
-    --muted: 220 14% 91%;
-    --muted-foreground: 220 9% 42%;       /* true meta only */
-    --subtle: 220 13% 88%;
-    --subtle-foreground: 220 12% 27%;     /* readable secondary — passes AA */
+    --muted: 220 14% 90%;
+    --muted-foreground: 220 9% 40%;       /* true meta only */
+    --subtle: 220 13% 86%;
+    --subtle-foreground: 220 12% 25%;     /* readable secondary — passes AA */
 
     /* Rules — open + ruled structure */
-    --border: 220 14% 86%;
-    --rule: 220 13% 89%;                  /* hairline between rows */
-    --rule-strong: 220 12% 70%;           /* table header boundary, section breaks */
+    --border: 220 13% 78%;
+    --rule: 220 13% 84%;                  /* hairline between rows */
+    --rule-strong: 220 14% 42%;           /* table header boundary, section breaks */
 
     /* Chrome — the graphite housing. Content never uses these. */
     --chrome: 220 16% 11%;
@@ -110,11 +112,11 @@
   */
   .key-raised {
     box-shadow:
-      inset 1px 1px 0 0 rgba(255, 255, 255, 0.9),
-      inset -1px -1px 0 0 hsl(220 15% 78%);
+      inset 1px 1px 0 0 rgba(255, 255, 255, 0.95),
+      inset -1px -1px 0 0 hsl(220 14% 64%);
   }
   .key-pressed {
-    box-shadow: inset 1px 1px 0 0 hsl(220 15% 68%);
+    box-shadow: inset 1px 1px 0 0 hsl(220 15% 56%);
   }
   .key-raised-dark {
     box-shadow:
@@ -133,13 +135,13 @@
     of the key bevel.
   */
   .well {
-    box-shadow: inset 1px 1px 0 0 hsl(220 15% 80%);
+    box-shadow: inset 1px 1px 0 0 hsl(220 14% 68%);
   }
   /* Focused well — the ink focus bar joins the recess (bar paints on top). */
   .well-focus {
     box-shadow:
       inset 4px 0 0 0 hsl(var(--primary)),
-      inset 1px 1px 0 0 hsl(220 15% 80%);
+      inset 1px 1px 0 0 hsl(220 14% 68%);
   }
   /* Latched — a checked binary control seats into its well: ink fill + dark top edge. */
   .latched {

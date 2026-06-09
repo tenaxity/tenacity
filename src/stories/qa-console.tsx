@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { MetricCard, MetricRow } from '@/components/ui/metric-card'
 import { Pagination } from '@/components/ui/pagination'
 import { SearchInput } from '@/components/ui/search-input'
+import { StatusBar, StatusBarDivider, StatusBarItem, StatusBarSpacer } from '@/components/ui/status-bar'
 import { StatusMark } from '@/components/ui/status-mark'
 import {
   Table,
@@ -137,7 +138,7 @@ export function QaConsoleScreen() {
         {/* Page header — roomy enough to breathe, then the data gets dense */}
         <div className="flex items-end justify-between gap-4">
           <div>
-            <h1 className="text-xl font-semibold tracking-tight">Master Test Case List</h1>
+            <h1 className="text-2xl font-semibold tracking-tight">Master Test Case List</h1>
             <p className="text-base text-subtle-foreground mt-1">
               QA-readable status board generated from planned cases, automated suites, and latest harness reports.
             </p>
@@ -219,6 +220,17 @@ export function QaConsoleScreen() {
         </Table>
         <Pagination from={1} to={7} total={306} />
       </main>
+
+      {/* The housing's bottom edge — readouts only, never actions */}
+      <StatusBar>
+        <StatusBarItem label="passed">286/306</StatusBarItem>
+        <StatusBarDivider />
+        <StatusBarItem label="failed">17</StatusBarItem>
+        <StatusBarDivider />
+        <StatusBarItem label="last run">2026-06-09 16:44:21</StatusBarItem>
+        <StatusBarSpacer />
+        <StatusBarItem label="env">staging</StatusBarItem>
+      </StatusBar>
     </div>
   )
 }
