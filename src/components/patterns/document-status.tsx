@@ -1,12 +1,13 @@
-import { CheckCircle2, Clock, FileSignature, XCircle, AlertTriangle, Send } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
+import { StatusMark } from '@/components/ui/status-mark'
 
 /*
-  DocumentStatus — Leegality-domain pattern.
-  System-encoded mapping: each status has a fixed tone, icon, AND variant.
-  Active states get SOLID (gravity, urgency).
-  Terminal/passive states get SOFT (settled, ambient).
+  DocumentStatus — domain pattern over the StatusMark idiom.
+  System-encoded mapping: each status has a fixed tone and fill.
   Designers cannot override — the system enforces hierarchy of attention.
+
+  Filled = the state happened (active or terminal).
+  Hollow = the state hasn't happened (draft, expired-into-nothing).
+  The square carries the color; the label stays ink (CLAUDE.md → StatusMark).
 */
 
 type Status =
@@ -18,25 +19,23 @@ type Status =
   | 'expired'
   | 'failed'
 
-type Tone = 'neutral' | 'primary' | 'success' | 'warning' | 'danger'
-type Variant = 'solid' | 'soft' | 'outline'
+type Tone = 'neutral' | 'ink' | 'success' | 'warning' | 'danger'
 
-const config: Record<Status, { label: string; tone: Tone; variant: Variant; icon: typeof CheckCircle2 }> = {
-  draft:        { label: 'Draft',       tone: 'neutral', variant: 'soft',  icon: FileSignature }, // passive — quiet
-  sent:         { label: 'Sent',        tone: 'primary', variant: 'solid', icon: Send },          // active — urgent
-  'in-progress':{ label: 'In progress', tone: 'warning', variant: 'solid', icon: Clock },         // active — awaiting
-  completed:    { label: 'Completed',   tone: 'success', variant: 'soft',  icon: CheckCircle2 },  // terminal positive — settled
-  rejected:     { label: 'Rejected',    tone: 'danger',  variant: 'solid', icon: XCircle },       // terminal negative — loud
-  expired:      { label: 'Expired',     tone: 'neutral', variant: 'soft',  icon: Clock },         // terminal dead — quiet
-  failed:       { label: 'Failed',      tone: 'danger',  variant: 'solid', icon: AlertTriangle }, // terminal error — loud
+const config: Record<Status, { label: string; tone: Tone; filled: boolean }> = {
+  draft:         { label: 'Draft',       tone: 'neutral', filled: false }, // hasn't happened yet
+  sent:          { label: 'Sent',        tone: 'ink',     filled: true  }, // active, in motion
+  'in-progress': { label: 'In progress', tone: 'warning', filled: true  }, // active, awaiting
+  completed:     { label: 'Completed',   tone: 'success', filled: true  }, // terminal positive
+  rejected:      { label: 'Rejected',    tone: 'danger',  filled: true  }, // terminal negative
+  expired:       { label: 'Expired',     tone: 'neutral', filled: false }, // dead, archive zone
+  failed:        { label: 'Failed',      tone: 'danger',  filled: true  }, // terminal error
 }
 
 export function DocumentStatus({ status }: { status: Status }) {
-  const { label, tone, variant, icon: Icon } = config[status]
+  const { label, tone, filled } = config[status]
   return (
-    <Badge tone={tone} variant={variant}>
-      <Icon className="h-3 w-3" strokeWidth={2.25} />
+    <StatusMark tone={tone} filled={filled}>
       {label}
-    </Badge>
+    </StatusMark>
   )
 }

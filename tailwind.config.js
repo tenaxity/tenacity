@@ -1,11 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class',
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
         background: 'hsl(var(--background))',
+        surface: 'hsl(var(--surface))',
         foreground: 'hsl(var(--foreground))',
         muted: {
           DEFAULT: 'hsl(var(--muted))',
@@ -16,12 +16,22 @@ export default {
           foreground: 'hsl(var(--subtle-foreground))',
         },
         border: 'hsl(var(--border))',
+        rule: {
+          DEFAULT: 'hsl(var(--rule))',
+          strong: 'hsl(var(--rule-strong))',
+        },
+        chrome: {
+          DEFAULT: 'hsl(var(--chrome))',
+          raised: 'hsl(var(--chrome-raised))',
+          foreground: 'hsl(var(--chrome-foreground))',
+          muted: 'hsl(var(--chrome-muted))',
+          rule: 'hsl(var(--chrome-rule))',
+        },
         ring: 'hsl(var(--ring))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           hover: 'hsl(var(--primary-hover))',
           foreground: 'hsl(var(--primary-foreground))',
-          subtle: 'hsl(var(--primary-subtle))',
         },
         success: {
           DEFAULT: 'hsl(var(--success))',
@@ -44,12 +54,11 @@ export default {
         mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
       },
       fontSize: {
-        // All-even scale per Hard Rule #11. Smallest readable size is xs (12px).
-        // No 2xs — 10px is too small for actual content, and badges/helpers/labels all use xs.
-        xs:    ['0.75rem',   { lineHeight: '1rem' }],       // 12px / 16px — helper text, badges, section labels
+        // All-even scale per Hard Rule #8. Smallest readable size is 12px.
+        xs:    ['0.75rem',   { lineHeight: '1rem' }],       // 12px / 16px — data cells, badges, helpers
         sm:    ['0.75rem',   { lineHeight: '1rem' }],       // 12px alias for xs (back-compat)
-        base:  ['0.875rem',  { lineHeight: '1.25rem' }],    // 14px / 20px — default body
-        md:    ['1rem',      { lineHeight: '1.5rem' }],     // 16px / 24px — card titles, prominent
+        base:  ['0.875rem',  { lineHeight: '1.25rem' }],    // 14px / 20px — prose body
+        md:    ['1rem',      { lineHeight: '1.5rem' }],     // 16px / 24px — card titles
         lg:    ['1.125rem',  { lineHeight: '1.5rem' }],     // 18px / 24px — subheadings
         xl:    ['1.25rem',   { lineHeight: '1.75rem' }],    // 20px / 28px — section headings
         '2xl': ['1.5rem',    { lineHeight: '2rem' }],       // 24px / 32px
@@ -57,7 +66,7 @@ export default {
         '4xl': ['2.25rem',   { lineHeight: '2.75rem' }],    // 36px / 44px
       },
       borderRadius: {
-        // Radius tokens read CSS variables so a runtime picker can swap modes.
+        // Radius tokens read CSS variables so the runtime picker can swap modes.
         none: '0px',
         sm: 'var(--radius-sm)',
         DEFAULT: 'var(--radius-md)',
@@ -66,12 +75,16 @@ export default {
         xl: 'var(--radius-xl)',
       },
       boxShadow: {
-        xs: '0 1px 1px rgba(0, 0, 0, 0.04)',
-        sm: '0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 1px rgba(0, 0, 0, 0.04)',
-        DEFAULT: '0 2px 4px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04)',
-        md: '0 4px 8px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04)',
-        lg: '0 12px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04)',
-        ring: '0 0 0 3px hsl(var(--ring) / 0.35)',
+        // Hard Rule #7: overlays get ONE functional shadow to establish
+        // z-order; nothing else casts.
+        overlay: '0 8px 24px rgba(13, 16, 23, 0.16), 0 2px 6px rgba(13, 16, 23, 0.10)',
+      },
+      transitionTimingFunction: {
+        seat: 'var(--ease-seat)',
+      },
+      transitionDuration: {
+        seat: '240ms',
+        micro: '80ms',
       },
     },
   },

@@ -14,8 +14,10 @@ interface BreadcrumbsProps {
 }
 
 /*
-  Breadcrumbs — chevron-separated trail. Last item is current page (no link styling).
-  Inactive crumbs use muted-foreground; active (last) is foreground. Standard pattern.
+  Breadcrumbs — chevron-separated trail. Navigation labels are human, so
+  they speak Geist, not mono (Hard Rule #2 cuts the other way here).
+  Inactive crumbs: subtle-foreground. Current page (last): foreground.
+  Separators are true meta: muted-foreground.
 */
 export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
   return (
@@ -30,7 +32,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
               <a
                 href={item.href}
                 onClick={item.onClick}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-subtle-foreground hover:text-foreground transition-colors duration-micro"
               >
                 {item.label}
               </a>

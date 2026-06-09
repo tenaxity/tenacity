@@ -16,7 +16,8 @@ import { cn } from '@/lib/cn'
     - optional labels (section headers within the menu)
 
   Hard Rule #1 respected: panel is white, items have NO soft tint on hover —
-  hover uses bg-muted (gray) per the system pattern.
+  hover uses bg-muted (gray) for every item, including destructive ones
+  (danger stays in the text; color never floods a surface).
 */
 
 export const DropdownMenu = RadixDropdown.Root
@@ -32,8 +33,9 @@ export const DropdownMenuContent = forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        'z-50 min-w-[10rem] rounded-md border border-border bg-background shadow-lg p-1',
-        'data-[state=open]:animate-in data-[state=closed]:animate-out',
+        // Overlay surface: the one functional shadow (Hard Rule #7), seats into place
+        'z-50 min-w-[10rem] rounded-md border border-border bg-surface shadow-overlay p-1',
+        'animate-seat-scale',
         className
       )}
       {...props}
@@ -54,9 +56,9 @@ export const DropdownMenuItem = forwardRef<
     ref={ref}
     className={cn(
       'relative flex cursor-pointer select-none items-center gap-2 rounded-sm px-2 py-1.5 text-base outline-none',
-      'transition-colors',
+      'transition-colors duration-micro',
       destructive
-        ? 'text-danger data-[highlighted]:bg-danger data-[highlighted]:text-danger-foreground'
+        ? 'text-danger data-[highlighted]:bg-muted'
         : 'text-foreground data-[highlighted]:bg-muted',
       'data-[disabled]:cursor-not-allowed data-[disabled]:text-muted-foreground data-[disabled]:bg-transparent',
       className
@@ -74,8 +76,10 @@ export const DropdownMenuCheckboxItem = forwardRef<
     ref={ref}
     className={cn(
       'relative flex cursor-pointer select-none items-center gap-2 rounded-sm pl-8 pr-2 py-1.5 text-base outline-none',
-      'transition-colors text-foreground',
+      'transition-colors duration-micro text-foreground',
       'data-[highlighted]:bg-muted',
+      // Checked = the ink left-bar idiom, not a tinted bg (Hard Rule #4)
+      'data-[state=checked]:font-semibold data-[state=checked]:shadow-[inset_4px_0_0_0_hsl(var(--primary))]',
       'data-[disabled]:cursor-not-allowed data-[disabled]:text-muted-foreground',
       className
     )}

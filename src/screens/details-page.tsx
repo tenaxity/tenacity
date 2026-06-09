@@ -34,6 +34,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { CreditsIndicator } from '@/components/ui/credits-indicator'
+import { StatusMark } from '@/components/ui/status-mark'
 import { AuditTrail } from '@/components/patterns/audit-trail'
 import { cn } from '@/lib/cn'
 
@@ -78,11 +79,16 @@ const INVITEES: Invitee[] = [
   { id: '8', name: 'Diya Raman',        email: 'diya@vivacorp.io',                          role: 'cc',       status: 'pending',  signingOrder: 8 },
 ]
 
+/*
+  Invitee status renders two ways:
+  - mark: StatusMark for repeating rows (filled = happened, hollow = hasn't)
+  - tone: Badge/FeaturedIcon tone for emphasis contexts (drawer header)
+*/
 const inviteeStatusConfig = {
-  signed:   { tone: 'success' as const, label: 'Signed' },
-  pending:  { tone: 'warning' as const, label: 'Pending' },
-  rejected: { tone: 'danger'  as const, label: 'Rejected' },
-  expired:  { tone: 'neutral' as const, label: 'Expired' },
+  signed:   { tone: 'success' as const, label: 'Signed',   mark: { tone: 'success' as const, filled: true  } },
+  pending:  { tone: 'warning' as const, label: 'Pending',  mark: { tone: 'neutral' as const, filled: false } },
+  rejected: { tone: 'danger'  as const, label: 'Rejected', mark: { tone: 'danger'  as const, filled: true  } },
+  expired:  { tone: 'neutral' as const, label: 'Expired',  mark: { tone: 'neutral' as const, filled: false } },
 }
 
 type LoadPhase = 'spinner' | 'skeleton' | 'ready'
@@ -94,7 +100,7 @@ export function DetailsPage() {
   const [bannerDismissed, setBannerDismissed] = useState(false)
   const [phase, setPhase] = useState<LoadPhase>('spinner')
 
-  // Two-phase load: stamp loader (centered) → skeleton placeholders → real content.
+  // Two-phase load: rule loader (centered) → skeleton placeholders → real content.
   // Showcases both loading idioms when navigating from the Sent table.
   // Durations are deliberately leisurely (~3s total) so each phase is visible —
   // production timings would be tied to the actual fetch state, not timers.
@@ -266,7 +272,7 @@ export function DetailsPage() {
                       <DropdownMenuItem><Edit className="h-4 w-4" />Edit details</DropdownMenuItem>
                       <NotificationLogsModalTrigger />
                       <ReactivateModalTrigger />
-                      <SaveToLeegalityModalTrigger />
+                      <SaveToVaultModalTrigger />
                       <DropdownMenuSeparator />
                       <DropdownMenuLabel>Records</DropdownMenuLabel>
                       <StampDetailsModalTrigger />
@@ -357,7 +363,10 @@ export function DetailsPage() {
                               <div className="text-base font-medium truncate">{inv.name}</div>
                               <div className="text-xs text-muted-foreground truncate">{inv.role === 'cc' ? 'CC · informational' : `Order ${inv.signingOrder}`}</div>
                             </div>
-                            <Badge tone={inviteeStatusConfig[inv.status].tone} variant="solid">{inviteeStatusConfig[inv.status].label}</Badge>
+                            {/* Repeating rows use StatusMark — badges are for emphasis contexts */}
+                            <StatusMark tone={inviteeStatusConfig[inv.status].mark.tone} filled={inviteeStatusConfig[inv.status].mark.filled}>
+                              {inviteeStatusConfig[inv.status].label}
+                            </StatusMark>
                           </button>
                         ))}
                         {INVITEES.length > 5 && (
@@ -397,7 +406,8 @@ export function DetailsPage() {
                     {INVITEES.map(inv => (
                       <div key={inv.id} className="flex items-center gap-4 py-3">
                         <span className="font-mono text-xs font-medium tabular-nums text-muted-foreground w-6 text-center shrink-0">{inv.signingOrder}</span>
-                        <Avatar size="md" initials={inv.name.split(' ').map(s => s[0]).join('')} status={inv.status === 'signed' ? 'online' : inv.status === 'rejected' ? 'offline' : 'away'} />
+                        {/* No status dot — presence semantics only; the StatusMark column carries sign status */}
+                        <Avatar size="md" initials={inv.name.split(' ').map(s => s[0]).join('')} />
                         {/* Clickable content area — opens drawer */}
                         <button
                           onClick={() => setDrawerInvitee(inv)}
@@ -418,11 +428,13 @@ export function DetailsPage() {
                             </div>
                           )}
                         </button>
-                        {/* Status column — fixed width */}
-                        <div className="flex flex-col items-end gap-1 shrink-0 w-24">
-                          <Badge tone={inviteeStatusConfig[inv.status].tone} variant="solid">{inviteeStatusConfig[inv.status].label}</Badge>
+                        {/* Status column — fixed width. StatusMark, never badges, in repeating rows */}
+                        <div className="flex flex-col items-end gap-1 shrink-0 w-28">
+                          <StatusMark tone={inviteeStatusConfig[inv.status].mark.tone} filled={inviteeStatusConfig[inv.status].mark.filled}>
+                            {inviteeStatusConfig[inv.status].label}
+                          </StatusMark>
                           {inv.signedAt && (
-                            <span className="text-xs font-medium tabular-nums text-muted-foreground whitespace-nowrap">{inv.signedAt}</span>
+                            <span className="font-mono text-xs font-medium tabular-nums text-muted-foreground whitespace-nowrap">{inv.signedAt}</span>
                           )}
                         </div>
                         {/* Quick actions — fixed width so badge never shifts */}
@@ -612,14 +624,13 @@ export function DetailsPage() {
 /* ───────── Loading views ───────── */
 
 /*
-  Phase 1 — full-page loader. The stamp loader carries the tenacity voice
-  ("a stamp pressing") so even the loading screen reads as a Tenacity surface
-  rather than a generic spinner.
+  Phase 1 — full-page loader. The indeterminate rule (a sliding ink segment
+  on a hairline track) is the system's only ambient motion — no spinners.
 */
 function DetailsSpinnerView() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center gap-4">
-      <Loader variant="stamps" size="xl" tone="primary" />
+      <Loader size="xl" tone="primary" />
       <div className="text-base font-medium text-subtle-foreground">Loading document…</div>
     </div>
   )
@@ -758,7 +769,7 @@ function NotificationsPreview() {
           <span className="font-medium">{n.kind}</span>
           <span className="text-muted-foreground">·</span>
           <span className="text-subtle-foreground">{n.channel}</span>
-          <span className="ml-auto text-xs text-muted-foreground tabular-nums">{n.at}</span>
+          <span className="ml-auto font-mono text-xs font-medium text-muted-foreground tabular-nums">{n.at}</span>
         </div>
       ))}
     </div>
@@ -850,14 +861,15 @@ function NotificationLogsModalTrigger({ renderAsMenuItem = false }: { renderAsMe
                   <td className="py-2 pr-3">{row.channel}</td>
                   <td className="py-2 pr-3 font-mono text-xs">{row.recipient}</td>
                   <td className="py-2 pr-3">
-                    <Badge
-                      tone={row.status === 'success' ? 'success' : row.status === 'failed' ? 'danger' : 'warning'}
-                      variant="solid"
+                    {/* Dense rows: StatusMark — filled = delivered/failed, hollow = still pending */}
+                    <StatusMark
+                      tone={row.status === 'success' ? 'success' : row.status === 'failed' ? 'danger' : 'neutral'}
+                      filled={row.status !== 'pending'}
                     >
                       {row.status}
-                    </Badge>
+                    </StatusMark>
                   </td>
-                  <td className="py-2 pr-3 text-right tabular-nums text-xs font-medium text-subtle-foreground whitespace-nowrap">{row.at}</td>
+                  <td className="py-2 pr-3 text-right font-mono tabular-nums text-xs font-medium text-subtle-foreground whitespace-nowrap">{row.at}</td>
                 </tr>
               ))}
             </tbody>
@@ -903,12 +915,12 @@ function PaymentLogsModalTrigger({ label, renderAsMenuItem = false }: { label: s
                 { date: '2026-04-30', ref: 'TXN/77185004', method: 'Card',        amount: '₹250',  status: 'failed'  },
               ].map((row, i) => (
                 <tr key={i} className="text-base">
-                  <td className="py-2 pr-3 tabular-nums">{row.date}</td>
+                  <td className="py-2 pr-3 font-mono text-xs font-medium tabular-nums">{row.date}</td>
                   <td className="py-2 pr-3 font-mono text-xs">{row.ref}</td>
                   <td className="py-2 pr-3">{row.method}</td>
-                  <td className="py-2 pr-3 text-right tabular-nums font-medium">{row.amount}</td>
+                  <td className="py-2 pr-3 text-right font-mono text-xs font-medium tabular-nums">{row.amount}</td>
                   <td className="py-2 pr-3">
-                    <Badge tone={row.status === 'success' ? 'success' : 'danger'} variant="solid">{row.status}</Badge>
+                    <StatusMark tone={row.status === 'success' ? 'success' : 'danger'} filled>{row.status}</StatusMark>
                   </td>
                 </tr>
               ))}
@@ -935,14 +947,14 @@ function StampDetailsModalTrigger() {
           <ModalDescription>e-Stamp paper applied to this document.</ModalDescription>
         </ModalHeader>
         <ModalBody className="space-y-3">
-          <InfoRow label="Stamp serial" value="SHCIL-MH-202604-AAA12345" mono />
+          <InfoRow label="Stamp serial" value="ESR-MH-202604-AAA12345" mono />
           <InfoRow label="State" value="Maharashtra" />
           <InfoRow label="Denomination" value="₹500" />
           <InfoRow label="Article" value="5(h-A)" />
           <InfoRow label="First party" value="Acme Inc." />
           <InfoRow label="Second party" value="Series A Investors" />
           <InfoRow label="Issued" value="2026-04-29" />
-          <Alert tone="success" variant="outline">Stamp consumed and locked to this document. The serial is verifiable on the SHCIL public registry.</Alert>
+          <Alert tone="success" variant="outline">Stamp consumed and locked to this document. The serial is verifiable on the public registry.</Alert>
         </ModalBody>
         <ModalFooter>
           <ModalClose asChild><Button variant="ghost">Close</Button></ModalClose>
@@ -1077,7 +1089,7 @@ function ReactivateModalTrigger() {
   )
 }
 
-function SaveToLeegalityModalTrigger() {
+function SaveToVaultModalTrigger() {
   return (
     <Modal>
       <ModalTrigger asChild>

@@ -7,10 +7,12 @@ import { cn } from '@/lib/cn'
   Sections group items under uppercase labels (matches the "structural label"
   voice from story sections, table headers, dropdown menu labels).
 
+  Lives on the light content surface (the chrome band stays up top in TopNav).
+
   Items have three states:
     - default: muted text, icon, hover bg-muted
-    - active:  foreground text, primary 4px LEFT BAR via inset shadow, semibold
-              (same bar-bold idiom as input focus, table selected row, multi-select trigger)
+    - active:  ink 4px LEFT BAR via inset shadow + text-foreground semibold
+              (same bar-bold idiom as input focus and table selected row)
     - disabled: muted, cursor-not-allowed
 
   Optional trailing badge for unread counters.
@@ -61,11 +63,11 @@ export function LeftNavItem({ icon, active, disabled, trailing, onClick, childre
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-base text-left transition-colors',
-        'focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 focus-visible:outline-none',
-        // Active: text + icon both primary, plus 4px primary left bar. No bg — that read as primary-tinted.
+        'w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-base text-left transition-colors duration-micro',
+        'focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2',
+        // Active: 4px ink left bar + foreground semibold. No bg fill — the bar carries it.
         active
-          ? 'text-primary font-semibold shadow-[inset_4px_0_0_0_hsl(var(--primary))]'
+          ? 'text-foreground font-semibold shadow-[inset_4px_0_0_0_hsl(var(--primary))]'
           : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground',
         disabled && 'opacity-50 cursor-not-allowed pointer-events-none',
         className

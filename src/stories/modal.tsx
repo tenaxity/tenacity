@@ -176,9 +176,9 @@ export function ModalStory() {
         </Modal>
       </Section>
 
-      <Section label="Submitting state — modal stays open with stamp loader">
+      <Section label="Submitting state — modal stays open with inline loader">
         <p className="text-xs text-subtle-foreground mb-2">
-          Click "Submit." Modal stays open showing the stamp loader for ~2s, then closes. Common pattern for actions that take real time.
+          Click "Submit." Modal stays open showing the inline loader for ~2s, then closes. Common pattern for actions that take real time.
         </p>
         <Modal open={submittingOpen} onOpenChange={setSubmittingOpen}>
           <ModalTrigger asChild>

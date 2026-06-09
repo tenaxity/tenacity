@@ -346,7 +346,7 @@ export function SentPage({ onNavigate }: SentPageProps = {}) {
                     <TableBody>
                       {filtered.length === 0 ? (
                         <TableRow>
-                          <TableCell colSpan={10} className="text-center py-12 text-base text-muted-foreground">
+                          <TableCell prose colSpan={10} className="text-center py-12 text-muted-foreground">
                             No packs match your filters. Try clearing them.
                           </TableCell>
                         </TableRow>
@@ -360,11 +360,12 @@ export function SentPage({ onNavigate }: SentPageProps = {}) {
                             <TableCell compact className="pl-10">
                               <Checkbox checked={selected.has(pack.id)} onCheckedChange={() => toggleOne(pack.id)} />
                             </TableCell>
-                            <TableCell>
+                            {/* Human text — opts out of the mono cell default */}
+                            <TableCell prose>
                               <div className="min-w-0">
                                 <button
                                   onClick={() => onNavigate?.('screen-details')}
-                                  className="font-medium truncate text-left hover:underline hover:text-primary transition-colors block max-w-full"
+                                  className="font-medium truncate text-left hover:underline transition-colors block max-w-full"
                                 >
                                   {pack.name}
                                 </button>

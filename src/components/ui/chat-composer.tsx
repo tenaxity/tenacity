@@ -3,6 +3,13 @@ import { Send, Square } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/cn'
 
+/*
+  ChatComposer — a composite fillable surface: a well at rest (recessed =
+  accepts, Hard Rule #7). The Input focus idiom — ink border + 4px bar
+  joining the recess (`well-focus`) — fires via focus-within since the
+  focusable textarea sits inside the container. Disabled goes flat.
+*/
+
 export interface ChatComposerProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onSubmit'> {
   onSend?: (value: string) => void
   onStop?: () => void
@@ -32,10 +39,12 @@ export const ChatComposer = forwardRef<HTMLTextAreaElement, ChatComposerProps>(
     return (
       <div
         className={cn(
-          'flex items-end gap-2 rounded-md border border-border bg-background p-2',
-          'transition-colors',
-          'focus-within:border-primary focus-within:shadow-bar-focus',
-          disabled && 'bg-muted cursor-not-allowed',
+          'flex items-end gap-2 rounded-md border border-border bg-surface p-2',
+          'transition-colors duration-micro',
+          'focus-within:border-primary focus-within:well-focus',
+          // A dead well has no relief — the container is a div (no :disabled
+          // pseudo-class), so the well is simply not rendered when disabled.
+          disabled ? 'bg-muted cursor-not-allowed' : 'well',
           className,
         )}
       >
@@ -51,7 +60,7 @@ export const ChatComposer = forwardRef<HTMLTextAreaElement, ChatComposerProps>(
             'flex-1 resize-none bg-transparent text-base text-foreground outline-none',
             'placeholder:text-muted-foreground',
             'disabled:cursor-not-allowed disabled:text-muted-foreground',
-            'min-h-[36px] max-h-[160px] py-1.5 px-1',
+            'min-h-8 max-h-[160px] py-1.5 px-1',
           )}
           {...props}
         />

@@ -1,12 +1,18 @@
 import { forwardRef, type HTMLAttributes } from 'react'
 import { cn } from '@/lib/cn'
 
+/*
+  Card — a white box on the gray page bed. Allowed only when a zone
+  genuinely needs containment (Hard Rule #3) — default to open content.
+  Dead flat: 1px border, zero shadow (Hard Rule #7). Terminal-dense padding.
+*/
+
 export const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
       className={cn(
-        'rounded-lg border border-border bg-background shadow-xs',
+        'rounded-md border border-border bg-surface',
         className
       )}
       {...props}
@@ -19,7 +25,7 @@ export const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEleme
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('px-5 py-4 border-b border-border', className)}
+      className={cn('px-4 py-3 border-b border-rule', className)}
       {...props}
     />
   )
@@ -41,7 +47,7 @@ export const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<H
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn('text-sm text-subtle-foreground mt-0.5', className)}
+      className={cn('text-xs text-subtle-foreground mt-0.5', className)}
       {...props}
     />
   )
@@ -50,7 +56,7 @@ CardDescription.displayName = 'CardDescription'
 
 export const CardBody = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('p-5', className)} {...props} />
+    <div ref={ref} className={cn('p-4', className)} {...props} />
   )
 )
 CardBody.displayName = 'CardBody'

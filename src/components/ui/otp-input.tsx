@@ -10,11 +10,13 @@ interface OtpInputProps {
 
 /*
   OTP — fixed-width digit boxes. Auto-advances on input, backspace goes back,
-  paste fills all boxes. Same focus idiom as Input (primary border + left bar
-  via inset shadow) for system coherence.
+  paste fills all boxes. Each cell is a well like Input (recessed = accepts,
+  Hard Rule #7); on focus the ink border + 4px bar join the recess
+  (`well-focus` — Hard Rule #5). Disabled cells go flat — a dead well has
+  no relief.
 
-  By design: each box is square-ish (h-11 w-10), mono-font for digit clarity,
-  large text. Aligned to industrial-modernist sharp aesthetic.
+  By design: each cell is a 32px square (h-8 w-8), matching the terminal row
+  rhythm. Digits are data — mono (Hard Rule #2).
 */
 export function OtpInput({ length = 6, value, onChange, className }: OtpInputProps) {
   const refs = useRef<(HTMLInputElement | null)[]>([])
@@ -70,10 +72,10 @@ export function OtpInput({ length = 6, value, onChange, className }: OtpInputPro
           onKeyDown={handleKeyDown(i)}
           onPaste={i === 0 ? handlePaste : undefined}
           className={cn(
-            'h-11 w-10 rounded-md border border-border bg-background text-center text-lg font-mono tabular-nums text-foreground',
-            'transition-colors outline-none',
-            'focus-visible:border-primary focus-visible:shadow-bar-focus',
-            'disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground'
+            'h-8 w-8 rounded-md border border-border bg-surface text-center text-base font-mono font-medium tabular-nums text-foreground well',
+            'transition-colors duration-micro outline-none',
+            'focus-visible:border-primary focus-visible:well-focus',
+            'disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none'
           )}
         />
       ))}

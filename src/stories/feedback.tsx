@@ -17,28 +17,28 @@ export function FeedbackStory() {
         <p className="text-base text-subtle-foreground mt-1">Loaders, progress, breadcrumbs, alerts, banners. The system's vocabulary for "something is happening" / "something happened" / "you are here."</p>
       </div>
 
-      <Section label="Loaders — two stamp variants, one idiom">
+      <Section label="Loader — the indeterminate rule">
         <p className="text-xs text-subtle-foreground -mt-1 mb-3">
-          The system has one voice for "in progress" — the judicial stamp. Single for one thing, four-in-sequence for batches. No generic spinners, no dots, no clocks. The choice itself conveys count.
+          The system has one voice for "in progress" — a hairline track with a sliding ink segment. No spinners, no dots, no mascots.
         </p>
 
-        <LoaderRow
-          variant="stamp"
-          title="Stamp (single)"
-          desc="One stamp pressing. Use for decisive single-action moments — submitting one document, sealing, finalizing."
-          example="Sealing document…"
-        />
-        <LoaderRow
-          variant="stamps"
-          title="Stamps (assembly line)"
-          desc="Four stamps fire in sequence — 1, 2, 3, 4 — like an assembly line of judicial seals. Use for batch / system processing of many."
-          example="Processing 4 documents…"
-        />
+        <div className="space-y-3">
+          {(['sm', 'md', 'lg', 'xl'] as const).map(size => (
+            <div key={size} className="flex items-center gap-4">
+              <code className="text-xs font-mono w-8 text-subtle-foreground">{size}</code>
+              <Loader size={size} />
+            </div>
+          ))}
+          <div className="flex items-center gap-2 text-base text-subtle-foreground pt-1">
+            <Loader size="sm" tone="muted" />
+            <span className="italic">Processing documents…</span>
+          </div>
+        </div>
       </Section>
 
-      <Section label="Inside buttons (use small stamp)">
+      <Section label="Inside buttons (use size sm)">
         <p className="text-xs text-subtle-foreground -mt-1 mb-2">
-          Small stamp omits the imprint to fit cleanly inside a button row.
+          The small rule sits cleanly inline in a button row.
         </p>
         <Row>
           <Button disabled><Loader size="sm" tone="white" />Saving…</Button>
@@ -93,7 +93,7 @@ export function FeedbackStory() {
       </Section>
 
       <Section label="Alert (inline) — outline default">
-        <p className="text-xs text-subtle-foreground mb-2">Outline is the calm version — colored border + icon, white background. No soft tinting (per Hard Rule #1).</p>
+        <p className="text-xs text-subtle-foreground mb-2">Outline is the calm version — 4px tone bar on the left edge + colored icon, white body. No tinted backgrounds (per Hard Rule #4).</p>
         <div className="space-y-3">
           <Alert tone="info" title="New feature available">
             Bulk signing is now available for batches of up to 50 documents at once.
@@ -111,7 +111,7 @@ export function FeedbackStory() {
       </Section>
 
       <Section label="Alert (inline) — solid">
-        <p className="text-xs text-subtle-foreground mb-2">Solid is the loud version. Use only for urgent/critical alerts where the user must act now.</p>
+        <p className="text-xs text-subtle-foreground mb-2">Solid is the loud version — the whole frame takes the tone color (stroke loudness, never fill). Use only for urgent/critical alerts where the user must act now.</p>
         <div className="space-y-3">
           <Alert tone="danger" variant="solid" title="Service incident">
             E-stamping is currently unavailable. Documents requiring stamping will queue and process automatically once service resumes.
@@ -123,7 +123,7 @@ export function FeedbackStory() {
       </Section>
 
       <Section label="Banner (page-top)">
-        <p className="text-xs text-subtle-foreground mb-2">Banners are always solid (loud by definition). They live at the top of a page or section.</p>
+        <p className="text-xs text-subtle-foreground mb-2">Full-bleed notice for the top of a page or section — same tone-bar grammar as Alert, seated against the page with a bottom rule.</p>
         {showBanner && (
           <Banner tone="warning" onClose={() => setShowBanner(false)} action={<Button size="xs" variant="secondary">Renew now</Button>}>
             Your subscription expires in 7 days. Renew to avoid interruption.
@@ -136,25 +136,6 @@ export function FeedbackStory() {
           You've been upgraded to Tenacity Pro. New features available now.
         </Banner>
       </Section>
-    </div>
-  )
-}
-
-function LoaderRow({ variant, title, desc, example }: { variant: 'stamp' | 'stamps'; title: string; desc: string; example: string }) {
-  return (
-    <div className="grid grid-cols-[10rem_1fr_14rem] items-center gap-4 py-3 border-b border-border last:border-b-0">
-      <div className="flex items-center gap-3">
-        <Loader variant={variant} size="md" />
-        <code className="text-xs font-mono">{variant}</code>
-      </div>
-      <div>
-        <div className="text-base font-semibold">{title}</div>
-        <div className="text-xs text-subtle-foreground mt-0.5">{desc}</div>
-      </div>
-      <div className="flex items-center gap-2 text-base text-subtle-foreground">
-        <Loader variant={variant} size="sm" tone="muted" />
-        <span className="italic">{example}</span>
-      </div>
     </div>
   )
 }

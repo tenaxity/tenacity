@@ -3,10 +3,16 @@ import { ChevronDown, Check } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
 
+/*
+  RadiusPicker — exploration tool (Hard Rule #12: lives only while the
+  radius question is open). Sets the --radius-* vars; 2px "edge" is the
+  locked CSS default in index.css.
+*/
+
 const MODES = [
-  { id: 'carbon', label: '0px',  vibe: 'Pure Carbon. Rectangles only.',  sm: '0px', md: '0px', lg: '0px', xl: '0px' },
-  { id: 'edge',   label: '2px',  vibe: 'Pixel-soft industrial.',         sm: '0px', md: '2px', lg: '2px', xl: '4px' },
-  { id: 'sharp',  label: '4px',  vibe: 'Subtle, contemporary.',          sm: '2px', md: '4px', lg: '6px', xl: '8px' },
+  { id: 'carbon', label: '0px',  vibe: 'Rectangles only. Pure instrument.',     sm: '0px', md: '0px', lg: '0px', xl: '0px' },
+  { id: 'edge',   label: '2px',  vibe: 'Machined edge — the locked default.',   sm: '0px', md: '2px', lg: '2px', xl: '4px' },
+  { id: 'sharp',  label: '4px',  vibe: 'Softer. Pushes the even-px ceiling.',   sm: '2px', md: '4px', lg: '6px', xl: '8px' },
 ] as const
 
 type ModeId = typeof MODES[number]['id']
@@ -29,7 +35,7 @@ export function RadiusPicker() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md border border-border bg-background hover:bg-muted text-xs font-medium text-foreground transition-colors">
+        <button className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md border border-border bg-surface hover:bg-muted text-xs font-medium text-foreground transition-colors duration-micro">
           <span className="text-muted-foreground text-xs">radius</span>
           <span className="tabular-nums">{activeMode?.label}</span>
           <ChevronDown className="h-3 w-3 text-muted-foreground" />

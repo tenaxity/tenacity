@@ -3,15 +3,14 @@ import { cloneElement, isValidElement, type ReactElement } from 'react'
 import { cn } from '@/lib/cn'
 
 /*
-  FeaturedIcon — solid filled square containing an icon. Used for emphasis at
-  the top of modals, empty states, banners, etc.
+  FeaturedIcon — sharp square containing an icon. Used for emphasis at the
+  top of modals, empty states, banners, etc.
 
-  Sharp corners, semantic-tone solid fill, white icon inside. The white icon
-  on solid color reads as "filled" even though the underlying lucide icons are
-  stroke-based — we bump strokeWidth to 2.5 for a chunkier, more committed look.
-
-  No soft tinted variants — per Hard Rule #1, surfaces don't get soft hue.
-  The square is either solidly colored or it doesn't exist.
+  Color is scarce (Hard Rule #1): the default is a neutral gray square.
+  Ink (primary) is solid for committed emphasis; success/warning/danger
+  solids are reserved for genuine alert semantics (destructive confirms,
+  failure states) — never decoration. No soft tints at any opacity.
+  strokeWidth bumps to 2.5 for a chunkier, more committed mark.
 */
 
 const featuredIconStyles = cva(
@@ -19,19 +18,20 @@ const featuredIconStyles = cva(
   {
     variants: {
       tone: {
+        neutral: 'bg-muted text-subtle-foreground',
         primary: 'bg-primary text-primary-foreground',
         success: 'bg-success text-success-foreground',
         warning: 'bg-warning text-warning-foreground',
         danger:  'bg-danger  text-danger-foreground',
-        neutral: 'bg-foreground text-background',
+        outline: 'bg-transparent border border-rule-strong text-subtle-foreground',
       },
       size: {
-        sm: 'h-9  w-9',
-        md: 'h-11 w-11',
+        sm: 'h-8  w-8',
+        md: 'h-10 w-10',
         lg: 'h-14 w-14',
       },
     },
-    defaultVariants: { tone: 'primary', size: 'md' },
+    defaultVariants: { tone: 'neutral', size: 'md' },
   }
 )
 

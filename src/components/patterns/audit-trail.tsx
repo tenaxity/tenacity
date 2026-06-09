@@ -2,7 +2,7 @@ import { FilePlus, Send, Eye, FileSignature, CheckCircle2, XCircle, AlertTriangl
 import { Timeline, TimelineItem } from '@/components/ui/timeline'
 
 /*
-  AuditTrail — Leegality domain pattern. Renders a chronological log of
+  AuditTrail — Document-domain pattern. Renders a chronological log of
   document events using Timeline. System enforces (icon, tone) per event type
   so designers can't render a "rejected" event in success-green by accident.
 */
@@ -36,7 +36,8 @@ const eventConfig: Record<AuditEventType, { tone: Tone; icon: typeof Send; verb:
   'completed':     { tone: 'success', icon: CheckCircle2,  verb: 'document fully executed' },
   'rejected':      { tone: 'danger',  icon: XCircle,       verb: 'rejected the document' },
   'expired':       { tone: 'neutral', icon: Clock,         verb: 'document expired' },
-  'reminder-sent': { tone: 'warning', icon: Send,          verb: 'reminder sent' },
+  // Reminders are routine plumbing, not alerts — neutral (Hard Rule #1).
+  'reminder-sent': { tone: 'neutral', icon: Send,          verb: 'reminder sent' },
   'failed':        { tone: 'danger',  icon: AlertTriangle, verb: 'signature failed' },
 }
 

@@ -2,10 +2,10 @@ import { type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
 /*
-  EmptyState — pattern for "there's nothing here yet." Centered container with
-  optional icon, title, description, and CTA. Tenacity-distinctive touch:
-  uses a faint outlined stamp shape as the default decorative element —
-  echoes the loader vocabulary at rest.
+  EmptyState — pattern for "there's nothing here yet." Centered container
+  with optional icon, title, description, and CTA. Default decoration is a
+  faint hollow square — the system's "hasn't happened" marker (StatusMark
+  vocabulary) at display size.
 */
 
 interface EmptyStateProps {
@@ -14,8 +14,8 @@ interface EmptyStateProps {
   description?: ReactNode
   action?: ReactNode
   className?: string
-  /** Show the default stamp outline if no icon provided. Default: true */
-  showStampDefault?: boolean
+  /** Show the default hollow-square mark if no icon provided. Default: true */
+  showDefaultMark?: boolean
 }
 
 export function EmptyState({
@@ -24,12 +24,12 @@ export function EmptyState({
   description,
   action,
   className,
-  showStampDefault = true,
+  showDefaultMark = true,
 }: EmptyStateProps) {
   return (
     <div className={cn('flex flex-col items-center justify-center text-center px-6 py-12', className)}>
       <div className="mb-4 flex items-center justify-center">
-        {icon ?? (showStampDefault && <DefaultStampIcon />)}
+        {icon ?? (showDefaultMark && <DefaultMark />)}
       </div>
       <div className="text-md font-semibold text-foreground">{title}</div>
       {description && (
@@ -40,13 +40,13 @@ export function EmptyState({
   )
 }
 
-function DefaultStampIcon() {
-  // A faint outlined stamp + imprint at rest. Echoes the loader vocabulary
-  // but static — "no document has been stamped yet."
+function DefaultMark() {
+  // Hollow square over a hairline — "this slot exists; nothing has filled
+  // it yet." The hollow idiom from StatusMark, scaled up and kept faint.
   return (
-    <div className="flex flex-col items-center gap-1 opacity-30">
-      <div className="h-10 w-10 rounded-sm border-2 border-foreground" />
-      <div className="h-1 w-8 rounded-sm bg-foreground/50" />
+    <div className="flex flex-col items-center gap-2 opacity-40">
+      <div className="h-10 w-10 rounded-sm border-2 border-rule-strong" />
+      <div className="h-px w-12 bg-rule-strong" />
     </div>
   )
 }

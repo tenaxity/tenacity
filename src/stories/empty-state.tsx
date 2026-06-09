@@ -9,11 +9,11 @@ export function EmptyStateStory() {
       <div>
         <h2 className="text-xl font-semibold tracking-tight">EmptyState</h2>
         <p className="text-base text-subtle-foreground mt-1">
-          Pattern for "there's nothing here yet." Centered, calm, with optional CTA. Default decoration is a faint stamp outline — echoes the loader vocabulary at rest.
+          Pattern for "there's nothing here yet." Centered, calm, with optional CTA. Default decoration is a faint hollow square — the system's "hasn't happened" marker at rest.
         </p>
       </div>
 
-      <Section label="No documents (default stamp icon)">
+      <Section label="No documents (default hollow mark)">
         <Card>
           <EmptyState
             title="No documents yet"
@@ -56,7 +56,7 @@ export function EmptyStateStory() {
             icon={<Inbox className="h-10 w-10 text-muted-foreground" />}
             title="Inbox zero"
             description="No pending notifications. You're all caught up."
-            showStampDefault={false}
+            showDefaultMark={false}
           />
         </Card>
       </Section>

@@ -1,9 +1,12 @@
 import { useState } from 'react'
-import { Search, Mail, Lock, AlertCircle, Check, X } from 'lucide-react'
+import { Mail, Lock, Check, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Field as FormField } from '@/components/ui/field'
 import { OtpInput } from '@/components/ui/otp-input'
+import { SearchInput } from '@/components/ui/search-input'
 import { TagInput } from '@/components/ui/tag-input'
+import { Textarea } from '@/components/ui/textarea'
 
 export function InputsStory() {
   const [otp, setOtp] = useState('')
@@ -14,13 +17,13 @@ export function InputsStory() {
       <div>
         <h2 className="text-xl font-semibold tracking-tight">Inputs</h2>
         <p className="text-sm text-subtle-foreground mt-1">
-          Single committed focus behavior — primary border + 3px primary bar slides in from the left.
+          Single committed focus behavior — ink border + 4px ink bar inset on the left edge.
         </p>
       </div>
 
       <Section label="Default state">
         <Field label="Empty">
-          <Input placeholder="ritik@leegality.com" />
+          <Input placeholder="ritik@example.com" />
         </Field>
         <Field label="Filled">
           <Input defaultValue="Series A SAFE — Acme Inc." />
@@ -30,41 +33,48 @@ export function InputsStory() {
         </Field>
       </Section>
 
-      <Section label="With label + helper text">
-        <div className="space-y-1.5">
-          <label className="text-xs font-medium text-foreground">Email</label>
-          <Input type="email" placeholder="you@company.com" />
-          <p className="text-xs text-muted-foreground">We'll send notifications here.</p>
-        </div>
-        <div className="space-y-1.5">
-          <label className="text-xs font-medium text-foreground">Password</label>
-          <Input type="password" placeholder="••••••••" />
-        </div>
+      <Section label="Field — label + helper + error, standardized">
+        <FormField label="Email" helper="We'll send notifications here." htmlFor="field-email">
+          <Input id="field-email" type="email" placeholder="you@company.com" />
+        </FormField>
+        <FormField label="Password" required htmlFor="field-pass">
+          <Input id="field-pass" type="password" placeholder="••••••••" />
+        </FormField>
+        <FormField label="Email" error="Enter a valid email address" htmlFor="field-err">
+          <Input id="field-err" defaultValue="not-an-email" aria-invalid />
+        </FormField>
+      </Section>
+
+      <Section label="Textarea — a deeper well">
+        <FormField label="Rejection reason" helper="Visible to the counterparty.">
+          <Textarea placeholder="State the reason in one or two sentences…" />
+        </FormField>
+      </Section>
+
+      <Section label="SearchInput — search affordance built in">
+        <SearchInput placeholder="case id, description, module" shortcut="⌘K" className="max-w-sm" />
       </Section>
 
       <Section label="With icons">
         <Field label="Leading icon">
           <div className="relative">
-            <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <Mail className="absolute left-3 top-2 h-4 w-4 text-muted-foreground pointer-events-none" />
             <Input placeholder="you@company.com" className="pl-9" />
           </div>
         </Field>
-        <Field label="Search">
-          <div className="relative">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
-            <Input placeholder="Search documents…" className="pl-9" />
-          </div>
+        <Field label="Search (use SearchInput)">
+          <SearchInput placeholder="Search documents…" />
         </Field>
         <Field label="Trailing icon (validation)">
           <div className="relative">
-            <Input defaultValue="ritik@leegality.com" className="pr-9" />
-            <Check className="absolute right-3 top-2.5 h-4 w-4 text-success pointer-events-none" />
+            <Input defaultValue="ritik@example.com" className="pr-9" />
+            <Check className="absolute right-3 top-2 h-4 w-4 text-success pointer-events-none" />
           </div>
         </Field>
         <Field label="Trailing icon (clearable)">
           <div className="relative">
             <Input defaultValue="something to clear" className="pr-9" />
-            <button className="absolute right-2 top-2 h-5 w-5 flex items-center justify-center rounded-sm text-muted-foreground hover:bg-muted hover:text-foreground">
+            <button className="absolute right-2 top-1.5 h-5 w-5 flex items-center justify-center rounded-sm text-muted-foreground hover:bg-muted hover:text-foreground">
               <X className="h-3.5 w-3.5" />
             </button>
           </div>
@@ -84,21 +94,15 @@ export function InputsStory() {
         <Field label="Read-only">
           <Input readOnly defaultValue="Read-only value" />
         </Field>
-        <Field label="Error (semantic only — visual error styling TBD)">
-          <div className="space-y-1">
-            <Input placeholder="Email" defaultValue="not-an-email" aria-invalid />
-            <p className="text-xs text-danger flex items-center gap-1">
-              <AlertCircle className="h-3 w-3" />
-              Enter a valid email address
-            </p>
-          </div>
+        <Field label="Error (see Field section above for the standardized form)">
+          <Input placeholder="Email" defaultValue="not-an-email" aria-invalid />
         </Field>
       </Section>
 
       <Section label="Sensitive">
         <Field label="Locked field">
           <div className="relative">
-            <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <Lock className="absolute left-3 top-2 h-4 w-4 text-muted-foreground pointer-events-none" />
             <Input defaultValue="DOC-A1B2-C3D4-E5F6" className="pl-9 font-mono text-sm" readOnly />
           </div>
         </Field>

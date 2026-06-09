@@ -9,7 +9,7 @@ export function TimelineStory() {
       <div>
         <h2 className="text-xl font-semibold tracking-tight">Timeline</h2>
         <p className="text-base text-subtle-foreground mt-1">
-          Chronological event log. Each item has a tone-colored marker, title row, optional timestamp + detail block. A muted line connects markers.
+          Chronological event log. Each item has a square marker (neutral gray unless the event is genuinely semantic), title row, mono timestamp + optional detail block. A hairline rule connects markers.
         </p>
       </div>
 
@@ -37,7 +37,7 @@ export function TimelineStory() {
         </Card>
       </Section>
 
-      <Section label="AuditTrail pattern (Leegality-domain)">
+      <Section label="AuditTrail pattern (document domain)">
         <p className="text-xs text-subtle-foreground -mt-1 mb-2">
           Domain pattern. You pass an array of events with types — system enforces (icon, tone, verb) per type. A "signed" event can never render in danger-red; "rejected" can never be success-green. Locked.
         </p>
@@ -64,7 +64,7 @@ export function TimelineStory() {
 
       <Section label="Stepper mode — past / active / future">
         <p className="text-xs text-subtle-foreground -mt-1 mb-2">
-          For workflow progress where there's a current stage. Active stage gets primary fill + ring offset (you-are-here signal). Completed = success + check. Pending = outlined muted.
+          For workflow progress where there's a current stage. Active stage gets a solid ink square + semibold title (you-are-here signal). Completed = success + check. Pending = hollow square, muted text.
         </p>
         <Card>
           <CardHeader>
@@ -93,7 +93,7 @@ export function TimelineStory() {
       </Section>
 
       <Section label="Plain timeline (no icons, just dots)">
-        <p className="text-xs text-subtle-foreground -mt-1 mb-2">When you don't need iconographic specificity — system falls back to a small centered dot.</p>
+        <p className="text-xs text-subtle-foreground -mt-1 mb-2">When you don't need iconographic specificity — system falls back to the small square marker.</p>
         <Card>
           <CardBody>
             <Timeline>
