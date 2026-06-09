@@ -4,15 +4,17 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/cn'
 
 /*
-  Alert — inline notice. Two variants per Hard Rule #1 (no soft tints inside fillable surfaces):
-    outline (default): white bg, colored border + colored icon + foreground body text
-    solid:             full primary/semantic bg, white text. Use sparingly for urgent/critical alerts.
+  Alert — inline notice. The accent is a 4px left bar + colored icon; the
+  body stays white (Hard Rule #4: no tinted backgrounds, and Hard Rule #1:
+  functional color appears only in accent bars and icons).
 
-  No tinted bg variant. Outline is the calm version; solid is the loud version.
+    outline (default): hairline neutral border + tone left bar. The calm version.
+    solid:             full 1px border in the tone color + tone left bar.
+                       The loud version — stroke loudness, never fill.
 */
 
 const alertStyles = cva(
-  'flex items-start gap-3 rounded-md p-4',
+  'flex items-start gap-3 rounded-md border border-l-4 bg-surface p-3',
   {
     variants: {
       tone: {
@@ -22,21 +24,21 @@ const alertStyles = cva(
         danger:  '',
       },
       variant: {
-        outline: 'bg-background border',
-        solid:   'border',
+        outline: '',
+        solid:   '',
       },
     },
     compoundVariants: [
-      // Outline: colored border + colored icon, foreground body text
-      { tone: 'info',    variant: 'outline', class: 'border-primary' },
-      { tone: 'success', variant: 'outline', class: 'border-success' },
-      { tone: 'warning', variant: 'outline', class: 'border-warning' },
-      { tone: 'danger',  variant: 'outline', class: 'border-danger'  },
-      // Solid: full bg fill
-      { tone: 'info',    variant: 'solid', class: 'bg-primary  text-primary-foreground border-primary' },
-      { tone: 'success', variant: 'solid', class: 'bg-success  text-success-foreground border-success' },
-      { tone: 'warning', variant: 'solid', class: 'bg-warning  text-warning-foreground border-warning' },
-      { tone: 'danger',  variant: 'solid', class: 'bg-danger   text-danger-foreground  border-danger'  },
+      // Outline: neutral frame, tone bar on the left edge
+      { tone: 'info',    variant: 'outline', class: 'border-border border-l-primary' },
+      { tone: 'success', variant: 'outline', class: 'border-border border-l-success' },
+      { tone: 'warning', variant: 'outline', class: 'border-border border-l-warning' },
+      { tone: 'danger',  variant: 'outline', class: 'border-border border-l-danger'  },
+      // Solid: the whole frame takes the tone — louder stroke, same white body
+      { tone: 'info',    variant: 'solid', class: 'border-primary' },
+      { tone: 'success', variant: 'solid', class: 'border-success' },
+      { tone: 'warning', variant: 'solid', class: 'border-warning' },
+      { tone: 'danger',  variant: 'solid', class: 'border-danger'  },
     ],
     defaultVariants: { tone: 'info', variant: 'outline' },
   }
@@ -66,25 +68,21 @@ export interface AlertProps
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
   ({ className, tone = 'info', variant = 'outline', title, children, onClose, ...props }, ref) => {
     const Icon = iconForTone[tone ?? 'info']
-    const isSolid = variant === 'solid'
     return (
       <div ref={ref} role="alert" className={cn(alertStyles({ tone, variant }), className)} {...props}>
         <Icon
-          className={cn('h-5 w-5 shrink-0 mt-0.5', isSolid ? 'text-current' : iconToneClass[tone ?? 'info'])}
+          className={cn('h-5 w-5 shrink-0 mt-0.5', iconToneClass[tone ?? 'info'])}
           strokeWidth={2}
         />
         <div className="flex-1 min-w-0">
-          {title && <div className={cn('text-base font-semibold', isSolid ? 'text-current' : 'text-foreground')}>{title}</div>}
-          {children && <div className={cn('text-base mt-0.5', isSolid ? 'text-current' : 'text-subtle-foreground', title && 'mt-1')}>{children}</div>}
+          {title && <div className="text-base font-semibold text-foreground">{title}</div>}
+          {children && <div className={cn('text-base mt-0.5 text-subtle-foreground', title && 'mt-1')}>{children}</div>}
         </div>
         {onClose && (
           <button
             onClick={onClose}
             aria-label="Close alert"
-            className={cn(
-              'shrink-0 rounded-sm p-0.5 transition-colors',
-              isSolid ? 'hover:bg-foreground/10 text-current' : 'hover:bg-muted text-muted-foreground hover:text-foreground'
-            )}
+            className="shrink-0 rounded-sm p-0.5 transition-colors hover:bg-muted text-muted-foreground hover:text-foreground"
           >
             <X className="h-4 w-4" />
           </button>

@@ -4,17 +4,18 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/cn'
 
 /*
-  Avatar — circular by design (per Hard Rule #4 exception: circles are meaningful for
-  identity/person representation, not decorative rounding).
+  Avatar — circular by design (the Hard Rule #6 exception: circles are
+  meaningful for identity, not decorative rounding).
 
   Sizes follow the system scale: 24/32/40/48 px (all even).
-  Initials use neutral muted bg + foreground text — no per-user random colors.
-  Image fallback handled via Radix.
-  Status dot is optional, sits at bottom-right.
+  Initials fallback is neutral — bg-muted + subtle-foreground. No per-user
+  tint colors; identity comes from the letters, not a hue.
+  Status dot is presence semantics only (online/away/offline) — never
+  repurpose it for document/workflow status.
 */
 
 const avatarStyles = cva(
-  'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-foreground font-semibold uppercase select-none',
+  'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted text-subtle-foreground font-semibold uppercase select-none',
   {
     variants: {
       size: {

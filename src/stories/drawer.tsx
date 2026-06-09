@@ -67,7 +67,7 @@ export function DrawerStory() {
 
       <Section label="Document detail (canonical use case)">
         <p className="text-xs text-subtle-foreground mb-2">
-          Click "Open document detail" — a full Leegality-flavored detail panel with header, audit trail, and footer actions.
+          Click "Open document detail" — a full document-flavored detail panel with header, audit trail, and footer actions.
         </p>
         <Drawer>
           <DrawerTrigger asChild>

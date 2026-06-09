@@ -3,13 +3,13 @@ import { forwardRef, type ComponentPropsWithoutRef, type ElementRef } from 'reac
 import { cn } from '@/lib/cn'
 
 /*
-  Tooltip — small dark popup with white text. Industrial-modernist:
-  near-black bg, sharp 2px corners, no glow shadow, brief text only.
+  Tooltip — small dark popup with light text. Instrument-coded:
+  near-black ink bg, sharp corners, shadow-overlay for z-order (the one
+  functional shadow overlays get — Hard Rule #7), brief text only.
   Reads like a Bloomberg-terminal hover, not a friendly bubble.
 
-  Triggers via hover/focus. For richer content (action menus, multi-line text),
-  use Popover instead. Hard Rule #9: tooltip is text-only and small; popover
-  hosts richer content.
+  Triggers via hover/focus. For richer content (action menus, multi-line
+  text), use Popover instead — tooltip stays text-only and small.
 */
 
 export const TooltipProvider = RadixTooltip.Provider
@@ -25,8 +25,7 @@ export const TooltipContent = forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        'z-50 max-w-xs rounded-sm bg-foreground text-background px-2 py-1 text-xs font-medium',
-        'data-[state=delayed-open]:animate-in data-[state=closed]:animate-out',
+        'z-50 max-w-xs rounded-sm bg-foreground text-background px-2 py-1 text-xs font-medium shadow-overlay',
         className
       )}
       {...props}

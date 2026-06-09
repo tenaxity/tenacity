@@ -1,6 +1,12 @@
 import { useState, useRef, useCallback, type ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 
+/*
+  SplitPane — two panes separated by a draggable 4px vertical rule.
+  The divider is the only vertical rule the system condones (Hard Rule #3);
+  it goes ink on hover — the active-edge idiom.
+*/
+
 interface SplitPaneProps {
   left: ReactNode
   right: ReactNode
@@ -53,7 +59,7 @@ export function SplitPane({
       </div>
       <div
         onMouseDown={onMouseDown}
-        className="shrink-0 w-1 cursor-col-resize bg-border hover:bg-primary/40 transition-colors"
+        className="shrink-0 w-1 cursor-col-resize bg-border hover:bg-primary transition-colors duration-micro"
       />
       <div className="flex-1 min-w-0 overflow-y-auto">
         {right}

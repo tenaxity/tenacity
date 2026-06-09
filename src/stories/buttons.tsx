@@ -32,7 +32,7 @@ export function ButtonsStory() {
 
       <Section label="Sizes">
         <p className="text-xs text-subtle-foreground -mt-1 mb-2">
-          Four sizes. XS is reserved for action-bar contexts. XS in primary-filled variant is banned — that's where badge collision lives. See CLAUDE.md → Hard Rule #9.
+          Four sizes on the 4px grid — 24 / 28 / 32 / 36px. XS is reserved for action-bar contexts. XS in primary-filled variant is banned — that's where badge collision lives. See CLAUDE.md → Hard Rule #11.
         </p>
         <Row>
           <Button size="xs" variant="secondary">Extra small</Button>

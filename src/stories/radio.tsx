@@ -8,7 +8,7 @@ export function RadioStory() {
     <div className="space-y-10 max-w-3xl">
       <div>
         <h2 className="text-xl font-semibold tracking-tight">Radio</h2>
-        <p className="text-sm text-subtle-foreground mt-1">Single-select. Selected = primary border with primary inner dot.</p>
+        <p className="text-sm text-subtle-foreground mt-1">Single-select. Selected = ink fill with white inner dot.</p>
       </div>
 
       <Section label="Group">

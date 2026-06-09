@@ -6,7 +6,7 @@ export function CardsStory() {
     <div className="space-y-10 max-w-3xl">
       <div>
         <h2 className="text-xl font-semibold tracking-tight">Cards</h2>
-        <p className="text-sm text-subtle-foreground mt-1">Container surface. Border + subtle shadow. Hosts headers, body, actions.</p>
+        <p className="text-sm text-subtle-foreground mt-1">Container surface. 1px border, dead flat — no shadow. Use only when a zone genuinely needs containment; default to open content.</p>
       </div>
 
       <div className="space-y-6">

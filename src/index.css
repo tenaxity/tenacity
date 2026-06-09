@@ -1,80 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* exploration-only imports — delete when type decision is final */
 @import url('https://rsms.me/inter/inter.css');
 @import url('https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /*
-  TENACITY DESIGN TOKENS
-  Color values in HSL so we can compose with alpha at runtime.
+  TENACITY v2 — "INSTRUMENT" TOKENS
+  Dark chrome is the machine's housing; light content is its screen.
+  All grays are blue-cold (hue 220). Color values in HSL so we can
+  compose with alpha at runtime.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 215 18% 40%;          /* slate-600ish — passes WCAG AA on white */
-    --subtle: 220 13% 91%;
-    --subtle-foreground: 215 25% 25%;         /* slate-700 — for descriptions, labels, secondary content */
-    --border: 220 13% 91%;
-    --ring: 256 51% 41%;
-    --primary: 256 51% 41%;             /* #54339D — Regal */
-    --primary-hover: 256 55% 33%;
+    /* Screen — the light content zone */
+    --background: 220 16% 95%;            /* cold steel page bed */
+    --surface: 0 0% 100%;                 /* white data surfaces */
+    --foreground: 220 20% 10%;
+    --muted: 220 14% 91%;
+    --muted-foreground: 220 9% 42%;       /* true meta only */
+    --subtle: 220 13% 88%;
+    --subtle-foreground: 220 12% 27%;     /* readable secondary — passes AA */
+
+    /* Rules — open + ruled structure */
+    --border: 220 14% 86%;
+    --rule: 220 13% 89%;                  /* hairline between rows */
+    --rule-strong: 220 12% 70%;           /* table header boundary, section breaks */
+
+    /* Chrome — the graphite housing. Content never uses these. */
+    --chrome: 220 16% 11%;
+    --chrome-raised: 220 14% 16%;         /* hover/active surfaces on chrome */
+    --chrome-foreground: 220 14% 92%;     /* active items */
+    --chrome-muted: 220 8% 62%;           /* inactive items */
+    --chrome-rule: 220 10% 24%;           /* dividers inside chrome */
+
+    /* Ink — the only interactive color */
+    --primary: 220 18% 14%;
+    --primary-hover: 220 16% 24%;
     --primary-foreground: 0 0% 100%;
-    --primary-subtle: 256 60% 96%;
-    --success: 145 50% 28%;             /* forest — settled, no urgency duty */
+
+    --ring: 220 18% 14%;
+
+    /* Functional — the only color on screen; scarcity makes it loud */
+    --success: 145 50% 28%;
     --success-foreground: 0 0% 100%;
     --success-subtle: 145 40% 94%;
-    --warning: 30 80% 44%;               /* burnt amber — readable as warm/alert, not brown */
+    --warning: 30 80% 42%;
     --warning-foreground: 0 0% 100%;
     --warning-subtle: 35 75% 94%;
-    --danger: 358 65% 48%;               /* cardinal red — urgent but weighted, not fire-engine */
+    --danger: 358 65% 46%;
     --danger-foreground: 0 0% 100%;
     --danger-subtle: 358 70% 96%;
 
-    /* Typeface */
+    /* Typefaces — the mono/sans boundary is the system's voice */
     --font-sans: 'Geist', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-    /* Radius — pixel-soft industrial. All-even per Hard Rule #11. */
+    /* Radius — machined. All-even per Hard Rule #8. */
     --radius-sm: 0px;
     --radius-md: 2px;
     --radius-lg: 2px;
     --radius-xl: 4px;
-  }
 
-  .dark {
-    --background: 222 47% 8%;
-    --foreground: 210 20% 96%;
-    --muted: 222 35% 13%;
-    --muted-foreground: 215 14% 70%;          /* lifted for dark bg readability */
-    --subtle: 222 30% 17%;
-    --subtle-foreground: 213 27% 86%;
-    --border: 222 25% 20%;
-    --ring: 256 60% 68%;
-    --primary: 256 60% 68%;
-    --primary-hover: 256 65% 76%;
-    --primary-foreground: 222 47% 8%;
-    --primary-subtle: 256 40% 16%;
-    --success: 145 45% 50%;
-    --success-foreground: 222 47% 8%;
-    --success-subtle: 145 35% 14%;
-    --warning: 32 75% 58%;
-    --warning-foreground: 222 47% 8%;
-    --warning-subtle: 32 50% 14%;
-    --danger: 358 65% 64%;
-    --danger-foreground: 222 47% 8%;
-    --danger-subtle: 358 50% 16%;
+    /* Motion — mass, not decoration */
+    --ease-seat: cubic-bezier(0.22, 1, 0.36, 1);   /* a part seating into place */
+    --duration-seat: 240ms;
+    --duration-micro: 80ms;
   }
-
-  /* Typeface profiles — toggled by class on <html> */
-  .font-inter   { --font-sans: 'Inter', system-ui, sans-serif; }
-  .font-geist   { --font-sans: 'Geist', system-ui, sans-serif; }
-  .font-switzer { --font-sans: 'Switzer', system-ui, sans-serif; }
-  .font-plex    { --font-sans: 'IBM Plex Sans', system-ui, sans-serif; }
 
   * { border-color: hsl(var(--border)); }
 
@@ -90,25 +86,82 @@
   body { margin: 0; min-height: 100vh; }
 }
 
-/*
-  Focus bar — system-wide idiom for fillable surfaces (inputs, dropdown triggers,
-  OTP cells, tag inputs). The 4px primary bar floats inside the field with 6px
-  breathing room top and bottom — the masks are bg-background colored stripes
-  that cover the bar's ends, so the bar appears "disconnected" from edges.
-
-  Order matters: in CSS multi-shadow, the FIRST shadow paints on top.
-  → masks listed first (cover the bar's ends), bar listed last (sits behind masks).
-*/
 @layer utilities {
+  /*
+    Focus bar — fillable surfaces (inputs, dropdown triggers, OTP cells,
+    tag inputs): border turns ink + a solid 4px ink bar inset on the left
+    edge, full height. (v1's floating-mask trick is retired.)
+  */
   .shadow-bar-focus {
+    box-shadow: inset 4px 0 0 0 hsl(var(--primary));
+  }
+
+  /*
+    RELIEF LANGUAGE (Hard Rule #7) — depth means interactive.
+    Raised = acts (keys/buttons). Recessed = accepts (wells/fields).
+    Latched = binary state seated in. Flat = informs (content).
+    All relief is hard 1px edge strokes (never blur/glow), snapping with
+    no transition: mechanical, not mushy.
+
+    Key bevel — buttons are machined keys (Win98-derived, v2-toned).
+    Rest: raised — light catches the top-left edge, the bottom-right falls
+    into shadow. Pressed: the bevel INVERTS and the face dips 1px — the key
+    physically sinks.
+  */
+  .key-raised {
     box-shadow:
-      inset 0  6px 0 0 hsl(var(--background)),
-      inset 0 -6px 0 0 hsl(var(--background)),
-      inset 4px 0 0 0 hsl(var(--primary));
+      inset 1px 1px 0 0 rgba(255, 255, 255, 0.9),
+      inset -1px -1px 0 0 hsl(220 15% 78%);
+  }
+  .key-pressed {
+    box-shadow: inset 1px 1px 0 0 hsl(220 15% 68%);
+  }
+  .key-raised-dark {
+    box-shadow:
+      inset 1px 1px 0 0 rgba(255, 255, 255, 0.18),
+      inset -1px -1px 0 0 rgba(0, 0, 0, 0.55);
+  }
+  .key-pressed-dark {
+    box-shadow:
+      inset 1px 1px 0 0 rgba(0, 0, 0, 0.55),
+      inset -1px -1px 0 0 rgba(255, 255, 255, 0.08);
+  }
+
+  /*
+    Well — fillable surfaces are recessed: a faint dark inner edge on the
+    top-left, as if the field were machined into the surface. The inverse
+    of the key bevel.
+  */
+  .well {
+    box-shadow: inset 1px 1px 0 0 hsl(220 15% 80%);
+  }
+  /* Focused well — the ink focus bar joins the recess (bar paints on top). */
+  .well-focus {
+    box-shadow:
+      inset 4px 0 0 0 hsl(var(--primary)),
+      inset 1px 1px 0 0 hsl(220 15% 80%);
+  }
+  /* Latched — a checked binary control seats into its well: ink fill + dark top edge. */
+  .latched {
+    box-shadow: inset 1px 1px 0 0 rgba(0, 0, 0, 0.45);
+  }
+
+  /*
+    Chrome material cue — the one place rendering is allowed (Hard Rule #7).
+    A 1px top highlight + a barely-there vertical falloff: the housing
+    catching light. Content surfaces stay dead flat.
+  */
+  .chrome-material {
+    background: linear-gradient(
+      180deg,
+      hsl(220 15% 13%) 0%,
+      hsl(var(--chrome)) 100%
+    );
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
   }
 }
 
-/* Animations */
+/* Indeterminate progress — the system's only ambient motion */
 @keyframes progress-indeterminate {
   0%   { left: -33%; }
   100% { left: 100%; }
@@ -117,41 +170,24 @@
   animation: progress-indeterminate 1.4s ease-in-out infinite;
 }
 
-/* Loader — rubber-stamp press (tenacity-distinctive) */
-@keyframes loader-stamp {
-  0%, 30%   { transform: translateY(-2px) scaleY(1); }
-  45%, 55%  { transform: translateY(0)    scaleY(0.7); }
-  70%, 100% { transform: translateY(-2px) scaleY(1); }
+/* Overlay seating — drawers/modals/toasts arrive with damped weight */
+@keyframes seat-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.animate-loader-stamp {
-  animation: loader-stamp 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+@keyframes seat-in-right {
+  from { transform: translateX(24px); opacity: 0.6; }
+  to   { transform: translateX(0); opacity: 1; }
 }
-
-/* Loader — imprint left behind by the stamp */
-@keyframes loader-imprint {
-  0%, 35%   { opacity: 0; transform: scaleX(0.6); }
-  50%       { opacity: 0.5; transform: scaleX(1); }
-  80%, 100% { opacity: 0; transform: scaleX(1); }
+@keyframes seat-in-left {
+  from { transform: translateX(-24px); opacity: 0.6; }
+  to   { transform: translateX(0); opacity: 1; }
 }
-.animate-loader-imprint {
-  animation: loader-imprint 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+@keyframes seat-in-scale {
+  from { opacity: 0; transform: scale(0.985) translateY(4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
-
-/* Loader — stamps (4 stamps firing in sequence, "1, 2, 3, 4") */
-@keyframes loader-stamps {
-  0%, 18%   { transform: translateY(-2px) scaleY(1); }
-  22%, 28%  { transform: translateY(0) scaleY(0.7); }
-  32%, 100% { transform: translateY(-2px) scaleY(1); }
-}
-.animate-loader-stamps {
-  animation: loader-stamps 2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
-}
-@keyframes loader-stamps-imprint {
-  0%, 18%   { opacity: 0; transform: scaleX(0.6); }
-  22%, 28%  { opacity: 0.5; transform: scaleX(1); }
-  32%, 100% { opacity: 0; transform: scaleX(1); }
-}
-.animate-loader-stamps-imprint {
-  animation: loader-stamps-imprint 2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
-}
-
+.animate-seat-up    { animation: seat-in-up    var(--duration-seat) var(--ease-seat); }
+.animate-seat-right { animation: seat-in-right var(--duration-seat) var(--ease-seat); }
+.animate-seat-left  { animation: seat-in-left  var(--duration-seat) var(--ease-seat); }
+.animate-seat-scale { animation: seat-in-scale var(--duration-seat) var(--ease-seat); }

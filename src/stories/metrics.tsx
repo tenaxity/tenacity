@@ -1,4 +1,4 @@
-import { MetricCard } from '@/components/ui/metric-card'
+import { MetricCard, MetricRow } from '@/components/ui/metric-card'
 import { ScoreMeter } from '@/components/ui/score-meter'
 import { SplitPane } from '@/components/ui/split-pane'
 import { Card, CardBody, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,24 +9,27 @@ export function MetricsStory() {
       <div>
         <h2 className="text-xl font-semibold tracking-tight">Metrics &amp; Layout</h2>
         <p className="text-base text-subtle-foreground mt-1">
-          MetricCard, ScoreMeter, and SplitPane.
+          MetricCard, MetricRow, ScoreMeter, and SplitPane.
         </p>
       </div>
 
-      <Section label="Metric cards — tones and trends">
-        <div className="grid grid-cols-4 gap-4">
+      <Section label="Metric row — the ruled instrument strip">
+        <p className="text-xs text-subtle-foreground -mt-1 mb-2">
+          Metrics are open, not boxed (Hard Rule #3). MetricRow rules the strip above and below; the mono values read as one instrument cluster. Value color is reserved for genuinely semantic readings.
+        </p>
+        <MetricRow>
           <MetricCard label="Total documents" value="1,284" trend="up" description="+12% from last month" />
           <MetricCard label="Completion rate" value="94%" tone="success" trend="up" description="6 of 64 pending" />
-          <MetricCard label="Avg. sign time" value="2.4 days" tone="warning" trend="down" description="Was 3.1 days" />
+          <MetricCard label="Avg. sign time" value="2.4 days" trend="down" description="Was 3.1 days" />
           <MetricCard label="Rejections" value="7" tone="danger" trend="flat" description="Same as last month" />
-        </div>
+        </MetricRow>
       </Section>
 
-      <Section label="Metric cards — neutral, no trend">
-        <div className="grid grid-cols-3 gap-4">
+      <Section label="Open metrics — no strip, no trend">
+        <div className="flex items-start gap-12">
           <MetricCard label="Active invitees" value="342" />
-          <MetricCard label="Credits remaining" value="2,480" tone="primary" description="of 10,000 total" />
-          <MetricCard label="Stamp papers" value="18" description="SHCIL Maharashtra" />
+          <MetricCard label="Credits remaining" value="2,480" description="of 10,000 total" />
+          <MetricCard label="Stamp papers" value="18" description="Maharashtra desk" />
         </div>
       </Section>
 

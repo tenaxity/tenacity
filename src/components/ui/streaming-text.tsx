@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { cn } from '@/lib/cn'
 
+/*
+  StreamingText — character-by-character render of an in-flight response.
+  The caret is a steady 2px ink block (no pulse — the arriving text is the
+  motion; the caret just marks the write head).
+*/
+
 interface StreamingTextProps {
   text: string
   speed?: number
@@ -39,7 +45,7 @@ export function StreamingText({ text, speed = 18, onComplete, className }: Strea
   return (
     <span className={cn('whitespace-pre-wrap', className)}>
       {displayed}
-      {!done && <span className="inline-block w-[2px] h-[1em] bg-foreground ml-0.5 animate-pulse align-text-bottom" />}
+      {!done && <span className="inline-block w-[2px] h-[1em] bg-foreground ml-0.5 align-text-bottom" />}
     </span>
   )
 }

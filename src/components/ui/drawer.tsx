@@ -5,11 +5,13 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/cn'
 
 /*
-  Drawer — side panel that slides in from an edge. Used for detail views,
+  Drawer — side panel that seats in from an edge. Used for detail views,
   filters, secondary navigation. Same plumbing as Modal (Radix Dialog) but
   positioned at an edge with width/height instead of centered.
 
-  Default: slides in from right at md width.
+  White surface, 1px inner edge, shadow-overlay for z-order (Hard Rule #7).
+  Arrives with the seat keyframes — damped, weighted (Hard Rule #13).
+  Default: seats in from right at md width.
 
   Composition mirrors Modal (DrawerHeader, DrawerBody, DrawerFooter, DrawerClose)
   for muscle-memory consistency.
@@ -20,14 +22,14 @@ export const DrawerTrigger = RadixDialog.Trigger
 export const DrawerClose = RadixDialog.Close
 
 const contentStyles = cva(
-  'fixed z-50 bg-background border-border shadow-lg flex flex-col',
+  'fixed z-50 bg-surface border-border shadow-overlay flex flex-col',
   {
     variants: {
       side: {
-        right:  'right-0 top-0 h-full border-l data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right',
-        left:   'left-0 top-0 h-full border-r',
+        right:  'right-0 top-0 h-full border-l animate-seat-right',
+        left:   'left-0 top-0 h-full border-r animate-seat-left',
         top:    'top-0 left-0 w-full border-b',
-        bottom: 'bottom-0 left-0 w-full border-t',
+        bottom: 'bottom-0 left-0 w-full border-t animate-seat-up',
       },
       size: {
         sm: '',
@@ -69,7 +71,8 @@ export const DrawerContent = forwardRef<
   DrawerContentProps
 >(({ className, side = 'right', size = 'md', children, hideClose, ...props }, ref) => (
   <RadixDialog.Portal>
-    <RadixDialog.Overlay className="fixed inset-0 z-50 bg-foreground/50 data-[state=open]:animate-in data-[state=closed]:animate-out" />
+    {/* Graphite scrim — the housing dims the screen. No blur (Hard Rule #7). */}
+    <RadixDialog.Overlay className="fixed inset-0 z-50 bg-chrome/50" />
     <RadixDialog.Content
       ref={ref}
       className={cn(contentStyles({ side, size }), className)}
@@ -99,7 +102,7 @@ export const DrawerHeader = forwardRef<HTMLDivElement, DrawerHeaderProps>(
       const arr = Children.toArray(children)
       const [titleChild, ...rest] = arr
       return (
-        <div ref={ref} className={cn('px-5 pt-5 pb-3 pr-12 border-b border-border', className)} {...props}>
+        <div ref={ref} className={cn('px-4 pt-4 pb-3 pr-10 border-b border-rule', className)} {...props}>
           <div className="flex items-center gap-3">
             <div className="shrink-0">{icon}</div>
             <div className="flex-1 min-w-0">{titleChild}</div>
@@ -109,7 +112,7 @@ export const DrawerHeader = forwardRef<HTMLDivElement, DrawerHeaderProps>(
       )
     }
     return (
-      <div ref={ref} className={cn('px-5 pt-5 pb-4 pr-12 border-b border-border', className)} {...props}>
+      <div ref={ref} className={cn('px-4 pt-4 pb-3 pr-10 border-b border-rule', className)} {...props}>
         {children}
       </div>
     )
@@ -143,7 +146,7 @@ DrawerDescription.displayName = 'DrawerDescription'
 
 export const DrawerBody = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('px-5 py-5 flex-1 overflow-y-auto', className)} {...props} />
+    <div ref={ref} className={cn('px-4 py-4 flex-1 overflow-y-auto', className)} {...props} />
   )
 )
 DrawerBody.displayName = 'DrawerBody'
@@ -152,7 +155,7 @@ export const DrawerFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEle
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('flex items-center justify-end gap-2 px-5 py-4 border-t border-border', className)}
+      className={cn('flex items-center justify-end gap-2 px-4 py-3 border-t border-rule', className)}
       {...props}
     />
   )

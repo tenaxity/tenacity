@@ -4,12 +4,15 @@ import { forwardRef, type ComponentPropsWithoutRef, type ElementRef } from 'reac
 import { cn } from '@/lib/cn'
 
 /*
-  Select — single-select form field. Trigger looks like an Input (same height,
-  border, focus state). Open panel mirrors the typeface/color picker visuals
-  but for form data.
+  Select — single-select form field. Trigger looks like an Input: a well at
+  rest (recessed = accepts, Hard Rule #7); focused or open, the ink border +
+  4px bar join the recess (`well-focus`). Disabled wells go flat. Open panel
+  is an overlay: white surface, hairline border, the one functional shadow,
+  seats into place. Panel items stay flat — relief belongs to the control,
+  not the list.
 
-  Selected item gets the bar-bold idiom: 4px primary left bar via inset shadow,
-  consistent with focused inputs and (eventually) sidebar active items.
+  Selected item gets the ink left-bar idiom: 4px primary bar via inset shadow,
+  consistent with focused inputs and selected table rows.
 */
 
 export const Select = RadixSelect.Root
@@ -22,14 +25,14 @@ export const SelectTrigger = forwardRef<
   <RadixSelect.Trigger
     ref={ref}
     className={cn(
-      'flex h-9 w-full items-center justify-between rounded-md border border-border bg-background px-3 text-base text-foreground',
+      'flex h-8 w-full items-center justify-between rounded-md border border-border bg-surface px-3 text-base text-foreground well',
       'placeholder:text-muted-foreground',
-      'transition-colors outline-none',
+      'transition-colors duration-micro outline-none',
       'data-[placeholder]:text-muted-foreground',
       // Focus state fires on keyboard focus AND when popover is open (consistent visual when active)
-      'focus-visible:border-primary focus-visible:shadow-bar-focus',
-      'data-[state=open]:border-primary data-[state=open]:shadow-bar-focus',
-      'disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground',
+      'focus-visible:border-primary focus-visible:well-focus',
+      'data-[state=open]:border-primary data-[state=open]:well-focus',
+      'disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none',
       className
     )}
     {...props}
@@ -51,7 +54,7 @@ export const SelectContent = forwardRef<
       ref={ref}
       position={position}
       className={cn(
-        'relative z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-background shadow-lg',
+        'relative z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-surface shadow-overlay animate-seat-scale',
         position === 'popper' && 'data-[side=bottom]:translate-y-1',
         className
       )}

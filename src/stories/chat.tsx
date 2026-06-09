@@ -11,16 +11,14 @@ const SAMPLE_RESPONSE = 'Based on the SAFE agreement, the valuation cap is set a
 
 export function ChatStory() {
   const [input, setInput] = useState('')
-  const [streaming, setStreaming] = useState(false)
   const [showStream, setShowStream] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const handleSend = (v: string) => {
+  const handleSend = () => {
     setInput('')
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
-      setStreaming(true)
       setShowStream(true)
     }, 1200)
   }
@@ -83,7 +81,7 @@ export function ChatStory() {
             <StreamingText
               text={SAMPLE_RESPONSE}
               speed={16}
-              onComplete={() => setStreaming(false)}
+              onComplete={() => {}}
             />
           ) : (
             <span className="text-muted-foreground">Click Send below to see the streaming demo.</span>

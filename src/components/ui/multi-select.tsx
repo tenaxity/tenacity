@@ -21,9 +21,13 @@ interface MultiSelectProps {
 /*
   MultiSelect — filter-style multi-select. Designed for "filter by tag/workflow/owner" use cases.
 
-  Trigger: shows "{label}: {first selected}" + "+N" badge for additional selections.
-            When closed: gray border. When open OR focused: primary border + inset bar (same idiom as Input/Select).
+  Trigger: shows "{label}: {first selected}" + "+N" count (mono — a count is data).
+            A well at rest (recessed = accepts, Hard Rule #7). Open OR focused:
+            ink border + 4px bar joins the recess (`well-focus`, same idiom as
+            Input/Select).
   Popover:  search input at top, scrollable checkbox list, "Clear Selection" footer.
+            The search field stays flat — it lives inside a floating overlay; a
+            bottom rule is enough.
 
   Multi-select fundamentally differs from Select (single) because the user can pick many,
   and the trigger needs to summarize that selection compactly.
@@ -56,11 +60,11 @@ export function MultiSelect({ label, options, value, onChange, placeholder = 'Al
       <PopoverTrigger asChild>
         <button
           className={cn(
-            'flex h-9 min-w-[14rem] items-center gap-2 rounded-md border border-border bg-background px-3 text-base text-foreground',
-            'transition-colors outline-none',
-            'hover:border-foreground/30',
-            'focus-visible:border-primary focus-visible:shadow-bar-focus',
-            'data-[state=open]:border-primary data-[state=open]:shadow-bar-focus',
+            'flex h-8 min-w-[14rem] items-center gap-2 rounded-md border border-border bg-surface px-3 text-base text-foreground well',
+            'transition-colors duration-micro outline-none',
+            'hover:border-rule-strong',
+            'focus-visible:border-primary focus-visible:well-focus',
+            'data-[state=open]:border-primary data-[state=open]:well-focus',
             className
           )}
         >
@@ -72,8 +76,9 @@ export function MultiSelect({ label, options, value, onChange, placeholder = 'Al
               {firstSelected?.label}
             </span>
           )}
+          {/* Count is data — mono (Hard Rule #2) */}
           {extraCount > 0 && (
-            <span className="shrink-0 inline-flex items-center justify-center h-5 min-w-[1.25rem] px-1.5 rounded-sm bg-foreground text-background text-xs font-semibold tabular-nums">
+            <span className="shrink-0 inline-flex items-center justify-center h-5 min-w-[1.25rem] px-1 rounded-sm bg-foreground text-background font-mono text-xs font-medium">
               +{extraCount}
             </span>
           )}
@@ -92,14 +97,14 @@ export function MultiSelect({ label, options, value, onChange, placeholder = 'Al
       >
         {/* Search */}
         <div className="relative border-b border-border">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <Search className="absolute left-3 top-2 h-4 w-4 text-muted-foreground pointer-events-none" />
           <input
             ref={searchRef}
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search…"
-            className="w-full h-9 pl-9 pr-3 text-base bg-transparent outline-none placeholder:text-muted-foreground"
+            className="w-full h-8 pl-9 pr-3 text-base bg-transparent outline-none placeholder:text-muted-foreground"
           />
         </div>
 
@@ -114,7 +119,7 @@ export function MultiSelect({ label, options, value, onChange, placeholder = 'Al
                 <button
                   key={o.value}
                   onClick={() => toggle(o.value)}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-base text-left hover:bg-muted transition-colors"
+                  className="w-full flex items-center gap-2.5 px-3 py-1.5 text-base text-left hover:bg-muted transition-colors duration-micro"
                 >
                   <Checkbox checked={isChecked} onCheckedChange={() => toggle(o.value)} />
                   <span className="truncate">{o.label}</span>
@@ -129,7 +134,7 @@ export function MultiSelect({ label, options, value, onChange, placeholder = 'Al
           <div className="border-t border-border">
             <button
               onClick={clear}
-              className="w-full px-3 py-2 text-left text-base text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              className="w-full px-3 py-1.5 text-left text-base text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-micro"
             >
               Clear Selection
             </button>

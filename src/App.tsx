@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { Moon, Sun, Type, MousePointerClick, Square, BadgeCheck, Layers, FileSignature, Sparkles, CheckSquare, Circle, ToggleLeft, ChevronDown, FolderTree, User, Bell, MessageSquare, Loader2, Inbox, MessageCircle, GitCommit, MoreVertical, PanelRight, Table as TableIcon, Monitor, MessageCircleMore, BarChart3 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { Type, MousePointerClick, Square, BadgeCheck, Layers, LayoutGrid, FileSignature, CheckSquare, Circle, ToggleLeft, ChevronDown, FolderTree, User, Bell, MessageSquare, Loader2, Inbox, MessageCircle, GitCommit, MoreVertical, PanelRight, Table as TableIcon, Monitor, MessageCircleMore, BarChart3 } from 'lucide-react'
 import { TypefacePicker } from '@/components/ui/typeface-picker'
 import { PrimaryPicker } from '@/components/ui/primary-picker'
 import { RadiusPicker } from '@/components/ui/radius-picker'
+import { TopNav, TopNavBrand, TopNavActions } from '@/components/ui/top-nav'
 import { cn } from '@/lib/cn'
 
 import { TypographyStory } from '@/stories/typography'
@@ -28,15 +27,24 @@ import { TimelineStory } from '@/stories/timeline'
 import { DropdownMenuStory } from '@/stories/dropdown-menu'
 import { DrawerStory } from '@/stories/drawer'
 import { TableStory } from '@/stories/table'
+import { DataDisplayStory } from '@/stories/data-display'
 import { ChatStory } from '@/stories/chat'
 import { MetricsStory } from '@/stories/metrics'
+import { AllComponentsStory } from '@/stories/all'
+import { QaConsoleScreen } from '@/stories/qa-console'
 import { SentPage } from '@/screens/sent-page'
 import { DetailsPage } from '@/screens/details-page'
 import { Toaster } from '@/components/ui/toast'
 
-type StoryId = 'typography' | 'buttons' | 'inputs' | 'select' | 'tabs' | 'badges' | 'cards' | 'checkbox' | 'radio' | 'toggle' | 'avatar' | 'feedback' | 'tooltip' | 'skeleton' | 'modal' | 'drawer' | 'timeline' | 'menu' | 'table' | 'document-status' | 'empty-state' | 'chat' | 'metrics' | 'screen-sent' | 'screen-details'
+type StoryId = 'all' | 'typography' | 'buttons' | 'inputs' | 'select' | 'tabs' | 'badges' | 'cards' | 'checkbox' | 'radio' | 'toggle' | 'avatar' | 'feedback' | 'tooltip' | 'skeleton' | 'modal' | 'drawer' | 'timeline' | 'menu' | 'table' | 'data-display' | 'document-status' | 'empty-state' | 'chat' | 'metrics' | 'screen-qa' | 'screen-sent' | 'screen-details'
 
 const NAV: { group: string; items: { id: StoryId; label: string; icon: typeof Type }[] }[] = [
+  {
+    group: 'Overview',
+    items: [
+      { id: 'all', label: 'All components', icon: LayoutGrid },
+    ],
+  },
   {
     group: 'Foundation',
     items: [
@@ -62,8 +70,9 @@ const NAV: { group: string; items: { id: StoryId; label: string; icon: typeof Ty
       { id: 'modal',    label: 'Modal',    icon: MessageCircle },
       { id: 'drawer',   label: 'Drawer',   icon: PanelRight },
       { id: 'timeline', label: 'Timeline', icon: GitCommit },
-      { id: 'menu',     label: 'Menu',     icon: MoreVertical },
-      { id: 'table',    label: 'Table',    icon: TableIcon },
+      { id: 'menu',         label: 'Menu',         icon: MoreVertical },
+      { id: 'table',        label: 'Table',        icon: TableIcon },
+      { id: 'data-display', label: 'Data display', icon: BarChart3 },
     ],
   },
   {
@@ -83,33 +92,28 @@ const NAV: { group: string; items: { id: StoryId; label: string; icon: typeof Ty
   {
     group: 'Screens',
     items: [
-      { id: 'screen-sent',    label: 'Sent (Documents)', icon: Monitor },
-      { id: 'screen-details', label: 'Document detail',  icon: Monitor },
+      { id: 'screen-qa',      label: 'QA Console (ref)',  icon: Monitor },
+      { id: 'screen-sent',    label: 'Sent (Documents)',  icon: Monitor },
+      { id: 'screen-details', label: 'Document detail',   icon: Monitor },
     ],
   },
 ]
 
 function App() {
-  const [dark, setDark] = useState(false)
-  const [active, setActive] = useState<StoryId>('inputs')
-
-  const toggleDark = () => {
-    const next = !dark
-    setDark(next)
-    document.documentElement.classList.toggle('dark', next)
-  }
+  const [active, setActive] = useState<StoryId>('all')
 
   // Full-page screens render without storybook chrome.
-  // A small fixed badge in the top-right lets the user return to the storybook.
+  // A small fixed button in the corner returns to the storybook.
   if (active.startsWith('screen-')) {
     return (
       <>
         <div className="relative">
-          {active === 'screen-sent'    && <SentPage onNavigate={(s) => setActive(s)} />}
+          {active === 'screen-qa'      && <QaConsoleScreen />}
+          {active === 'screen-sent'    && <SentPage onNavigate={() => setActive('screen-details')} />}
           {active === 'screen-details' && <DetailsPage />}
           <button
             onClick={() => setActive('inputs')}
-            className="fixed bottom-4 left-4 z-[60] flex items-center gap-1.5 px-3 h-8 rounded-md bg-foreground text-background text-xs font-medium shadow-lg hover:opacity-90 transition-opacity"
+            className="fixed bottom-4 left-4 z-[60] flex items-center gap-1.5 px-3 h-8 rounded-md bg-primary text-primary-foreground text-xs font-medium hover:bg-primary-hover active:translate-y-[1px] transition-colors duration-micro"
           >
             ← Back to storybook
           </button>
@@ -122,34 +126,30 @@ function App() {
   return (
     <>
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header — sticky, all live tokens accessible while scrolling */}
-      <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
-        <div className="px-6 h-14 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="h-6 w-6 rounded bg-primary" />
-            <span className="font-semibold tracking-tight text-md">tenacity</span>
-            <Badge tone="primary" className="ml-2">v0.1</Badge>
-          </div>
-          <div className="flex items-center gap-2">
-            <PrimaryPicker />
-            <TypefacePicker />
-            <RadiusPicker />
-            <div className="w-px h-5 bg-border mx-1" />
-            <Button variant="ghost" size="sm" onClick={toggleDark}>
-              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              <span className="hidden md:inline">{dark ? 'Light' : 'Dark'}</span>
-            </Button>
-          </div>
-        </div>
-      </header>
+      {/* Chrome — the housing. Storybook identity lives here. */}
+      <TopNav>
+        <TopNavBrand>tenacity</TopNavBrand>
+        <span className="font-mono text-xs text-chrome-muted tracking-wider">INSTRUMENT · V2</span>
+        <TopNavActions>
+          <span className="font-mono text-xs text-chrome-muted hidden md:inline">graphite / geist+jbmono / 2px</span>
+        </TopNavActions>
+      </TopNav>
+
+      {/* Bench — exploration tools. Deleted when decisions lock (Hard Rule #12). */}
+      <div className="sticky top-12 z-20 h-10 px-4 flex items-center gap-2 bg-background border-b border-rule">
+        <span className="text-xs uppercase tracking-wider font-semibold text-subtle-foreground mr-2">Bench</span>
+        <PrimaryPicker />
+        <TypefacePicker />
+        <RadiusPicker />
+      </div>
 
       <div className="flex">
-        {/* Sidebar — sticky, beneath the header */}
-        <nav className="w-56 shrink-0 sticky top-14 self-start h-[calc(100vh-3.5rem)] border-r border-border overflow-y-auto py-6 px-3">
-          <div className="space-y-6">
+        {/* Sidebar — sticky beneath chrome + bench */}
+        <nav className="w-56 shrink-0 sticky top-[88px] self-start h-[calc(100vh-88px)] border-r border-rule overflow-y-auto py-5 px-3">
+          <div className="space-y-5">
             {NAV.map(group => (
               <div key={group.group} className="space-y-1">
-                <div className="px-2 text-xs uppercase tracking-wider text-muted-foreground font-medium">{group.group}</div>
+                <div className="px-2 text-xs uppercase tracking-wider text-subtle-foreground font-semibold">{group.group}</div>
                 <div className="space-y-0.5">
                   {group.items.map(item => {
                     const Icon = item.icon
@@ -158,9 +158,9 @@ function App() {
                         key={item.id}
                         onClick={() => setActive(item.id)}
                         className={cn(
-                          'w-full flex items-center gap-2 px-2 py-1.5 rounded-sm text-sm transition-colors text-left',
+                          'w-full flex items-center gap-2 px-2 py-1.5 rounded-sm text-base transition-colors duration-micro text-left',
                           active === item.id
-                            ? 'bg-muted text-foreground font-medium'
+                            ? 'text-foreground font-semibold shadow-[inset_4px_0_0_0_hsl(var(--primary))]'
                             : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
                         )}
                       >
@@ -174,17 +174,15 @@ function App() {
             ))}
           </div>
 
-          <div className="mt-8 px-2 pt-6 border-t border-border">
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Sparkles className="h-3 w-3" />
-              <span>tenacity · v0.1</span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">Personal sandbox. Industrial-modernist + judicial gravitas.</p>
+          <div className="mt-8 px-2 pt-5 border-t border-rule">
+            <div className="font-mono text-xs text-muted-foreground">tenacity · v2</div>
+            <p className="text-xs text-muted-foreground mt-1">Personal system. The housing is dark; the screen is lit.</p>
           </div>
         </nav>
 
         {/* Main */}
         <main className="flex-1 px-10 py-8 min-w-0">
+          {active === 'all'             && <AllComponentsStory />}
           {active === 'typography'      && <TypographyStory />}
           {active === 'buttons'         && <ButtonsStory />}
           {active === 'inputs'          && <InputsStory />}
@@ -204,11 +202,11 @@ function App() {
           {active === 'timeline'        && <TimelineStory />}
           {active === 'menu'            && <DropdownMenuStory />}
           {active === 'table'           && <TableStory />}
+          {active === 'data-display'    && <DataDisplayStory />}
           {active === 'document-status' && <DocumentStatusStory />}
           {active === 'empty-state'     && <EmptyStateStory />}
           {active === 'chat'            && <ChatStory />}
           {active === 'metrics'         && <MetricsStory />}
-          {active === 'screen-sent'     && <SentPage />}
         </main>
       </div>
     </div>

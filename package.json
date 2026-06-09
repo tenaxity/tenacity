@@ -1,7 +1,7 @@
 {
   "name": "@ten4city/ui",
-  "version": "0.2.0",
-  "description": "Industrial-modernist React design system for legal/document/B2B enterprise software.",
+  "version": "0.3.0",
+  "description": "Instrument — an industrial React design system for dense operational software. Graphite chrome, terminal density, relief-language controls.",
   "license": "UNLICENSED",
   "type": "module",
   "repository": {

@@ -1,6 +1,12 @@
 import { ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
+/*
+  ReferenceChip — a citation to a document/source. It points at data, so it
+  speaks machine: mono 12px on a neutral gray chip, sharp corners. No tints;
+  hover sharpens the border, it never adds color.
+*/
+
 interface ReferenceChipProps {
   number: number
   title: string
@@ -17,9 +23,10 @@ export function ReferenceChip({ number, title, href, onClick, className }: Refer
     <Tag
       {...(linkProps as any)}
       className={cn(
-        'inline-flex items-center gap-1.5 h-7 px-2 rounded-sm',
-        'border border-border bg-background text-xs font-medium text-foreground',
-        'hover:bg-muted hover:border-foreground/20 transition-colors',
+        'inline-flex items-center gap-1.5 h-6 px-2 rounded-sm',
+        'border border-border bg-muted font-mono text-xs font-medium text-foreground',
+        'hover:border-rule-strong transition-colors duration-micro',
+        'focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2',
         className,
       )}
     >

@@ -7,7 +7,7 @@ export function DocumentStatusStory() {
       <div>
         <h2 className="text-xl font-semibold tracking-tight">DocumentStatus</h2>
         <p className="text-sm text-subtle-foreground mt-1">
-          Leegality-domain pattern. System enforces tone + variant + icon for each status — designer cannot override.
+          Document-domain pattern over the StatusMark idiom. The system enforces marker + tone per status — filled square means the state happened, hollow means it hasn't. The square carries the color; the label stays ink. No overrides. For emphasis contexts (page headers, summaries) use Badge instead.
         </p>
       </div>
 
@@ -43,7 +43,7 @@ export function DocumentStatusStory() {
                 </div>
                 <div className="flex items-center gap-3 ml-4">
                   <DocumentStatus status={row.status} />
-                  <span className="text-xs text-muted-foreground tabular-nums w-16 text-right">{row.when}</span>
+                  <span className="font-mono text-xs font-medium text-muted-foreground tabular-nums w-16 text-right">{row.when}</span>
                 </div>
               </div>
             ))}

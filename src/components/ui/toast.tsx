@@ -16,8 +16,10 @@ import { dismissToast, subscribeToasts, type Toast } from '@/components/ui/toast
   don't have to care about being inside a Provider. Trade-off: this only supports
   one Toaster — but a UI app only needs one anyway.
 
-  Per Hard Rule #1 the toast surface stays bg-background (no soft tinting).
-  Tone is communicated via the FeaturedIcon-style square at the left.
+  Surface is white with 1px border + shadow-overlay — the one functional
+  shadow overlays get (Hard Rule #7). No soft tinting (Hard Rule #4): tone
+  is carried by the FeaturedIcon-style square at the left. Arrives with
+  animate-seat-up — weighted, damped (Hard Rule #13).
 */
 
 const toneIcon = {
@@ -51,12 +53,11 @@ export function Toaster() {
             role="status"
             className={cn(
               'pointer-events-auto flex items-start gap-3 min-w-[20rem] max-w-[26rem] p-3 pr-2',
-              'rounded-md border border-border bg-background shadow-lg',
-              'data-[state=open]:animate-in data-[state=closed]:animate-out',
-              'animate-in slide-in-from-right-4 fade-in duration-200',
+              'rounded-md border border-border bg-surface shadow-overlay',
+              'animate-seat-up',
             )}
           >
-            <span className={cn('shrink-0 inline-flex items-center justify-center h-9 w-9 rounded-md', toneSquareClass[t.tone])}>
+            <span className={cn('shrink-0 inline-flex items-center justify-center h-8 w-8 rounded-md', toneSquareClass[t.tone])}>
               <Icon className="h-4 w-4" strokeWidth={2.4} />
             </span>
             <div className="flex-1 min-w-0 pt-0.5">

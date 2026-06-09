@@ -4,19 +4,16 @@ import { cn } from '@/lib/cn'
 /*
   Input — single committed focus behavior, no opt-out.
 
-  Default state: 1px gray border, all sides symmetric.
-  Focus state:   border becomes primary + 3px primary bar slides in on the left
-                 via inset box-shadow (no layout shift).
+  Recessed = accepts (Hard Rule #7): a fillable surface is a well — faint
+  dark inner edge top-left, machined into the surface. On focus the border
+  turns ink and the 4px ink bar joins the recess (`well-focus`; no layout
+  shift, no glow — Hard Rule #5). Relief snaps — no box-shadow transition.
+  Disabled wells go flat: a dead well has no relief.
 
-  This pattern (primary-colored left edge = active/focused) is part of a
-  system-wide visual idiom. Same idiom should apply to:
-    - Sidebar nav active items
-    - Selected table rows
-    - Active accordion sections
-    - Any "this is the active thing" affordance
+  The ink left edge = "this is the active thing" is a system-wide idiom:
+  sidebar active items, selected table rows, active accordion sections.
 
-  Rules referenced: CLAUDE.md → Hard Rule #1 (no soft hue inside fillable surfaces),
-  Hard Rule #3 (no glow rings), Hard Rule #8 (locked decisions remove alternatives).
+  Dense: 32px tall (h-8), matching the terminal row rhythm.
 */
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement>
@@ -26,11 +23,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     <input
       ref={ref}
       className={cn(
-        'flex h-9 w-full rounded-md border border-border bg-background px-3 text-base text-foreground',
+        'flex h-8 w-full rounded-md border border-border bg-surface px-3 text-base text-foreground well',
         'placeholder:text-muted-foreground',
-        'disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground',
-        'transition-colors outline-none',
-        'focus-visible:border-primary focus-visible:shadow-bar-focus',
+        'disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:shadow-none',
+        'transition-colors duration-micro outline-none',
+        'focus-visible:border-primary focus-visible:well-focus',
         className
       )}
       {...props}

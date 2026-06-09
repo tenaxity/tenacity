@@ -1,5 +1,13 @@
 import { cn } from '@/lib/cn'
 
+/*
+  ScoreMeter — radial gauge for a 0–100 reading. Track is bg-subtle; the
+  fill is ink by default. Functional color is allowed only when the reading
+  is semantically a pass/fail signal (Hard Rule #1). The number is data —
+  mono, tabular. No round caps, no entrance animation: data renders
+  instantly (Hard Rule #13).
+*/
+
 type Tone = 'primary' | 'success' | 'warning' | 'danger' | 'neutral'
 type Size = 'sm' | 'md' | 'lg'
 
@@ -21,7 +29,7 @@ const toneStroke: Record<Tone, string> = {
 }
 
 const toneText: Record<Tone, string> = {
-  primary: 'text-primary',
+  primary: 'text-foreground',
   success: 'text-success',
   warning: 'text-warning',
   danger:  'text-danger',
@@ -50,7 +58,7 @@ export function ScoreMeter({ value, max = 100, label, tone = 'primary', size = '
           r={radius}
           fill="none"
           strokeWidth={stroke}
-          className="stroke-muted"
+          className="stroke-subtle"
         />
         <circle
           cx={px / 2}
@@ -60,12 +68,11 @@ export function ScoreMeter({ value, max = 100, label, tone = 'primary', size = '
           strokeWidth={stroke}
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          strokeLinecap="round"
-          className={cn('transition-[stroke-dashoffset] duration-500', toneStroke[tone])}
+          className={toneStroke[tone]}
         />
       </svg>
-      <div className={cn('font-semibold tabular-nums', fontSize, toneText[tone])}>{Math.round(pct)}%</div>
-      {label && <div className="text-xs text-subtle-foreground">{label}</div>}
+      <div className={cn('font-mono font-semibold tabular-nums', fontSize, toneText[tone])}>{Math.round(pct)}%</div>
+      {label && <div className="text-xs uppercase tracking-wider font-semibold text-subtle-foreground">{label}</div>}
     </div>
   )
 }

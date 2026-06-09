@@ -6,9 +6,10 @@ import { cn } from '@/lib/cn'
 
 /*
   Modal — overlay dialog. Tenacity-coded:
-    - Sharp corners (4px max — uses --radius-lg)
-    - Backdrop is dark navy at ~50% opacity, no blur
-    - Content has 1px border + shadow-lg, centered
+    - Sharp corners (2px), white surface
+    - Scrim is graphite chrome at 50%, no blur — the housing dims the screen
+    - Panel: 1px border + shadow-overlay (the one functional shadow, Hard Rule #7),
+      seats into place with animate-seat-scale (Hard Rule #13)
     - Close button (X) in top-right, ghost styling
     - Three sizes (sm / md / lg) for different content densities
     - Footer is a horizontal action bar with right-aligned buttons by default
@@ -41,8 +42,10 @@ export const Modal = RadixDialog.Root
 export const ModalTrigger = RadixDialog.Trigger
 export const ModalClose = RadixDialog.Close
 
+// Centering comes from the flex wrapper, not translate — the seat-scale
+// keyframe owns `transform` while the panel arrives.
 const contentStyles = cva(
-  'fixed left-1/2 top-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 rounded-lg border border-border bg-background shadow-lg flex flex-col max-h-[90vh]',
+  'relative pointer-events-auto w-full rounded-md border border-border bg-surface shadow-overlay flex flex-col max-h-[90vh] animate-seat-scale',
   {
     variants: {
       size: {
@@ -66,22 +69,25 @@ export const ModalContent = forwardRef<
   ModalContentProps
 >(({ className, size, children, hideClose, ...props }, ref) => (
   <RadixDialog.Portal>
-    <RadixDialog.Overlay className="fixed inset-0 z-50 bg-foreground/50 data-[state=open]:animate-in data-[state=closed]:animate-out" />
-    <RadixDialog.Content
-      ref={ref}
-      className={cn(contentStyles({ size }), 'data-[state=open]:animate-in data-[state=closed]:animate-out', className)}
-      {...props}
-    >
-      {children}
-      {!hideClose && (
-        <RadixDialog.Close
-          className="absolute right-3 top-3 rounded-sm p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 focus-visible:outline-none"
-          aria-label="Close"
-        >
-          <X className="h-4 w-4" />
-        </RadixDialog.Close>
-      )}
-    </RadixDialog.Content>
+    {/* Graphite scrim — the housing dims the screen. No blur (Hard Rule #7). */}
+    <RadixDialog.Overlay className="fixed inset-0 z-50 bg-chrome/50" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+      <RadixDialog.Content
+        ref={ref}
+        className={cn(contentStyles({ size }), className)}
+        {...props}
+      >
+        {children}
+        {!hideClose && (
+          <RadixDialog.Close
+            className="absolute right-3 top-3 rounded-sm p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 focus-visible:outline-none"
+            aria-label="Close"
+          >
+            <X className="h-4 w-4" />
+          </RadixDialog.Close>
+        )}
+      </RadixDialog.Content>
+    </div>
   </RadixDialog.Portal>
 ))
 ModalContent.displayName = 'ModalContent'
@@ -100,7 +106,7 @@ export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(
       const arr = Children.toArray(children)
       const [titleChild, ...rest] = arr
       return (
-        <div ref={ref} className={cn('px-5 pt-5 pb-3 pr-12', className)} {...props}>
+        <div ref={ref} className={cn('px-4 pt-4 pb-3 pr-10', className)} {...props}>
           <div className="flex items-center gap-3">
             <div className="shrink-0">{icon}</div>
             <div className="flex-1 min-w-0">{titleChild}</div>
@@ -110,7 +116,7 @@ export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(
       )
     }
     return (
-      <div ref={ref} className={cn('px-5 pt-5 pb-3 pr-12', className)} {...props}>
+      <div ref={ref} className={cn('px-4 pt-4 pb-3 pr-10', className)} {...props}>
         {children}
       </div>
     )
@@ -146,7 +152,7 @@ export const ModalBody = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElemen
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('px-5 py-3 flex-1 overflow-y-auto', className)}
+      className={cn('px-4 py-3 flex-1 overflow-y-auto', className)}
       {...props}
     />
   )
@@ -157,7 +163,7 @@ export const ModalFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElem
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn('flex items-center justify-end gap-2 px-5 py-4 border-t border-border', className)}
+      className={cn('flex items-center justify-end gap-2 px-4 py-3 border-t border-rule', className)}
       {...props}
     />
   )

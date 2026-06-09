@@ -3,30 +3,17 @@ import { forwardRef, type HTMLAttributes, type ReactNode, type TdHTMLAttributes 
 import { cn } from '@/lib/cn'
 
 /*
-  Table — primitive table chrome. Composable, not data-driven (deliberate —
-  domain patterns can wrap this for typed tables; the primitive stays simple).
+  Table — full-bleed, open + ruled (Hard Rule #3). No outer border, no
+  surrounding card. Structure comes from rules:
+    - rule-strong below the header row
+    - hairline rules between body rows
 
-  Composition:
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead sortable sortDir="asc" onSort={...}>Name</TableHead>
-          <TableHead>Status</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow>
-          <TableCell>...</TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+  The mono/sans boundary (Hard Rule #2): headers are human labels (Geist,
+  uppercase); cells default to machine data (mono, 12px, medium). Cells
+  holding human text opt out via the `prose` prop; cells holding components
+  (StatusMark, buttons) are unaffected by the font default.
 
-  Visual:
-    - No outer border (lives in a Card if needed)
-    - Header row: subtle gray bg, ALL CAPS small section labels (matches the
-      typographic voice we use elsewhere for structural labels)
-    - Body rows: hover bg-muted, divider line between rows
-    - Sortable header: chevron icon appears next to label, primary when sorted
+  Density: 32px rows by default, 28px compact. Terminal-dense.
 */
 
 export const Table = forwardRef<HTMLTableElement, HTMLAttributes<HTMLTableElement>>(
@@ -38,14 +25,14 @@ Table.displayName = 'Table'
 
 export const TableHeader = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => (
-    <thead ref={ref} className={cn('bg-muted/40 border-b border-border', className)} {...props} />
+    <thead ref={ref} className={cn('border-b border-rule-strong', className)} {...props} />
   )
 )
 TableHeader.displayName = 'TableHeader'
 
 export const TableBody = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => (
-    <tbody ref={ref} className={cn('divide-y divide-border', className)} {...props} />
+    <tbody ref={ref} className={cn('divide-y divide-rule', className)} {...props} />
   )
 )
 TableBody.displayName = 'TableBody'
@@ -56,8 +43,8 @@ export const TableRow = forwardRef<HTMLTableRowElement, HTMLAttributes<HTMLTable
       ref={ref}
       data-selected={selected || undefined}
       className={cn(
-        'group transition-colors',
-        'data-[selected]:bg-primary-subtle/0 data-[selected]:shadow-[inset_4px_0_0_0_hsl(var(--primary))]',
+        'group transition-colors duration-micro',
+        'data-[selected]:shadow-[inset_4px_0_0_0_hsl(var(--primary))]',
         'hover:bg-muted/60',
         className
       )}
@@ -83,7 +70,7 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
       <th
         ref={ref}
         className={cn(
-          'px-4 py-2.5 text-xs uppercase tracking-wider font-semibold text-subtle-foreground',
+          'px-3 py-2 text-xs uppercase tracking-wider font-semibold text-subtle-foreground',
           alignClass,
           sortable && 'cursor-pointer select-none hover:text-foreground',
           className
@@ -94,7 +81,7 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
         {sortable ? (
           <span className={cn('inline-flex items-center gap-1', align === 'right' && 'justify-end w-full')}>
             {children}
-            <Indicator className={cn('h-3 w-3', sortDir ? 'text-primary' : 'text-muted-foreground')} />
+            <Indicator className={cn('h-3 w-3', sortDir ? 'text-foreground' : 'text-muted-foreground')} />
           </span>
         ) : children}
       </th>
@@ -105,19 +92,24 @@ TableHead.displayName = 'TableHead'
 
 interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
   align?: 'left' | 'right' | 'center'
-  /** Reduced padding for cells holding small components (badges, avatars) */
+  /** Human text (descriptions, names-as-labels) — Geist instead of mono */
+  prose?: boolean
+  /** Reduced padding: 28px rows instead of 32px */
   compact?: boolean
 }
 
 export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
-  ({ className, align = 'left', compact, ...props }, ref) => {
+  ({ className, align = 'left', prose, compact, ...props }, ref) => {
     const alignClass = align === 'right' ? 'text-right' : align === 'center' ? 'text-center' : 'text-left'
     return (
       <td
         ref={ref}
         className={cn(
-          compact ? 'px-4 py-2' : 'px-4 py-3',
-          'text-base text-foreground align-middle',
+          compact ? 'px-3 py-1.5' : 'px-3 py-2',
+          prose
+            ? 'text-base text-foreground'
+            : 'font-mono text-xs font-medium text-foreground',
+          'align-middle',
           alignClass,
           className
         )}
@@ -138,7 +130,7 @@ TableCaption.displayName = 'TableCaption'
 export function TableEmpty({ children, className, ...props }: HTMLAttributes<HTMLTableCellElement> & { children: ReactNode; colSpan?: number }) {
   return (
     <tr>
-      <td colSpan={props.colSpan} className={cn('px-4 py-12 text-center', className)} {...props}>
+      <td colSpan={props.colSpan} className={cn('px-3 py-12 text-center', className)} {...props}>
         {children}
       </td>
     </tr>

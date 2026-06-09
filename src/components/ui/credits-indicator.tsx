@@ -1,8 +1,10 @@
 import { cn } from '@/lib/cn'
 
 /*
-  CreditsIndicator — circular progress showing % remaining of e-sign credits.
-  Used in the top nav. Color shifts to warning/danger as balance gets low.
+  CreditsIndicator — radial gauge showing % remaining of e-sign credits.
+  The gauge is data visualization, so functional color is allowed: ink by
+  default, warning/danger only as the balance genuinely runs low.
+  The count is a data value — mono, tabular (Hard Rule #2).
 */
 
 interface CreditsIndicatorProps {
@@ -30,13 +32,12 @@ export function CreditsIndicator({ remaining, total, label = 'Credits', classNam
           fill="none"
           className={toneClass}
           strokeWidth="3"
-          strokeLinecap="round"
           strokeDasharray={`${dash} ${c}`}
         />
       </svg>
       <div className="flex flex-col leading-tight">
         <span className="text-xs uppercase tracking-wider font-semibold text-subtle-foreground">{label}</span>
-        <span className="text-base font-mono tabular-nums font-medium text-foreground">
+        <span className="font-mono text-xs font-medium tabular-nums text-foreground">
           {remaining.toLocaleString('en-IN')}
         </span>
       </div>

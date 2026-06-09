@@ -3,13 +3,13 @@ import { forwardRef, type ComponentPropsWithoutRef, type ElementRef } from 'reac
 import { cn } from '@/lib/cn'
 
 /*
-  Tabs — horizontal navigation with primary bottom-bar on active.
-  Inactive: muted-foreground text, no bottom border
-  Active: foreground text, 2px primary border-bottom
+  Tabs — ink underline on active, never pills or filled backgrounds.
+  Inactive: subtle-foreground text, no bottom border
+  Active: foreground text, 2px ink border-bottom
   Disabled: muted text, cursor-not-allowed
 
-  Same conceptual idiom as bar-bold focus on inputs (primary-colored accent
-  on the active edge), just rotated 90° because tabs are horizontal.
+  Same idiom as the ink bar-focus on inputs (ink accent on the active
+  edge), just rotated 90° because tabs are horizontal.
 */
 
 export const Tabs = RadixTabs.Root
@@ -33,13 +33,13 @@ export const TabsTrigger = forwardRef<
   <RadixTabs.Trigger
     ref={ref}
     className={cn(
-      'inline-flex items-center gap-1.5 px-3 py-2 -mb-px text-base font-medium',
-      'border-b-2 border-transparent text-muted-foreground',
-      'transition-colors',
+      'inline-flex items-center gap-1.5 px-3 py-1.5 -mb-px text-base font-medium',
+      'border-b-2 border-transparent text-subtle-foreground',
+      'transition-colors duration-micro',
       'hover:text-foreground',
       'focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 focus-visible:outline-none',
-      // Active: text + icon + bottom-bar all go primary (icons inherit via currentColor)
-      'data-[state=active]:text-primary data-[state=active]:border-primary data-[state=active]:font-semibold',
+      // Active: foreground text + 2px ink underline (icons inherit via currentColor)
+      'data-[state=active]:text-foreground data-[state=active]:border-primary data-[state=active]:font-semibold',
       'disabled:cursor-not-allowed disabled:text-muted-foreground disabled:hover:text-muted-foreground',
       className
     )}

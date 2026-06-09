@@ -15,9 +15,11 @@ interface TagInputProps {
   plus a typeable area. Press Enter or comma to add a new chip. Backspace on
   an empty input removes the last chip.
 
-  Visually behaves like an Input — same border, same focus state (border + bar).
-  The container *is* the focus surface; individual chips are not focusable here
-  (kept minimal — they could be made focusable for keyboard removal later).
+  Visually behaves like an Input — same well recess at rest (recessed =
+  accepts, Hard Rule #7); on focus-within the ink border + 4px bar join the
+  recess (`well-focus`). The container *is* the focus surface; individual
+  chips are not focusable here (kept minimal — they could be made focusable
+  for keyboard removal later).
 
   Chips use Badge `solid neutral` for committed presence — these are real entries,
   not soft-tinted suggestions.
@@ -56,9 +58,9 @@ export function TagInput({ value, onChange, placeholder, className }: TagInputPr
     <div
       onClick={() => inputRef.current?.focus()}
       className={cn(
-        'flex flex-wrap items-center gap-1.5 min-h-9 w-full rounded-md border border-border bg-background px-2 py-1.5 text-base',
-        'transition-colors',
-        'focus-within:border-primary focus-within:shadow-bar-focus',
+        'flex flex-wrap items-center gap-1.5 min-h-8 w-full rounded-md border border-border bg-surface px-2 py-1 text-base well',
+        'transition-colors duration-micro',
+        'focus-within:border-primary focus-within:well-focus',
         className
       )}
     >
@@ -67,7 +69,7 @@ export function TagInput({ value, onChange, placeholder, className }: TagInputPr
           <span>{tag}</span>
           <button
             onClick={e => { e.stopPropagation(); removeTag(tag) }}
-            className="ml-0.5 rounded-sm hover:bg-foreground/20 p-0.5"
+            className="ml-0.5 rounded-sm hover:bg-primary-hover p-0.5"
             aria-label={`Remove ${tag}`}
           >
             <X className="h-3 w-3" />

@@ -3,7 +3,6 @@ import { MoreVertical, Trash2, Eye, Send, Copy, FileText, FileSignature, Setting
 import {
   Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
 } from '@/components/ui/table'
-import { Card } from '@/components/ui/card'
 import { Avatar } from '@/components/ui/avatar'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
@@ -84,7 +83,7 @@ export function TableStory() {
         <div>
           <h2 className="text-xl font-semibold tracking-tight">Table</h2>
           <p className="text-base text-subtle-foreground mt-1">
-            Tabular data display. Supports supporting text, icons, hover-only actions, column selector, sorting, selection.
+            Full-bleed, open + ruled. Cells are mono data by default; human text opts out via the <code className="font-mono text-xs">prose</code> prop. Status columns use StatusMark, never badges. Supports hover-only actions, column selector, sorting, selection.
           </p>
         </div>
 
@@ -117,7 +116,8 @@ export function TableStory() {
             </div>
           </div>
 
-          <Card>
+          {/* Full-bleed: no Card, no outer border — rules carry the structure (Hard Rule #3) */}
+          <div className="border-y border-rule">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -151,7 +151,8 @@ export function TableStory() {
                       <TableCell compact>
                         <Checkbox checked={selected.has(doc.id)} onCheckedChange={() => toggleOne(doc.id)} />
                       </TableCell>
-                      <TableCell>
+                      {/* Human text — opts out of the mono cell default */}
+                      <TableCell prose>
                         <div className="flex items-center gap-3">
                           <div className="shrink-0 flex items-center justify-center h-8 w-8 rounded-sm bg-muted text-muted-foreground">
                             <Icon className="h-4 w-4" />
@@ -242,7 +243,7 @@ export function TableStory() {
                 })}
               </TableBody>
             </Table>
-          </Card>
+          </div>
         </Section>
 
         <Section label="Edge-to-edge variant — maximize horizontal space">
@@ -284,7 +285,8 @@ export function TableStory() {
                       <TableCell compact className="pl-10">
                         <Checkbox checked={selected.has(doc.id)} onCheckedChange={() => toggleOne(doc.id)} />
                       </TableCell>
-                      <TableCell>
+                      {/* Human text — opts out of the mono cell default */}
+                      <TableCell prose>
                         <div className="flex items-center gap-3">
                           <div className="shrink-0 flex items-center justify-center h-8 w-8 rounded-sm bg-muted text-muted-foreground">
                             <Icon className="h-4 w-4" />
